@@ -1,13 +1,13 @@
 import * as fs from "fs";
 // import("./test.cjs");
-import {runTest, runTests, TestResponse} from "./codeOlympTester/index.js";
+import {runTests} from "./codeOlympTester/index.js";
 
 runTests({cmd: "node test.js", inputFiles: {"test.js": fs.readFileSync("./test.js")}}, [
     {inputText: "test \n4\n"},
     {inputText: "qwerty \n10\n"},
     {inputText: "qwertyuiopasdfghjklzxcvbnm \n100\n"},
     {inputText: "abcd \n1000\n"}
-]).then(response => {
+], {runFull: true}).then(response => {
     console.log(response.responses.map(elem => elem.response).join("\n"));
 });
 

@@ -33,21 +33,22 @@ export class TestsResponse {
     }
 
     runTest(i = 0) {
-        let response = new TestResponse(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultOptions.cmd,
+        new TestResponse(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultOptions.cmd,
             this.tests[i].checker ?? this.forAllTests.checker ?? defaultOptions.checker,
-            {...defaultOptions, ...this.forAllTests, ...this.tests[i]});
-        response.onAfterEnd(() => {
-            // console.log(i);
-            this.responses.push(response);
-            // console.log(i < this.tests.length - 1, this.runFull, response.ok, response.checker === TestResponse.prototype.checker);
-            if (i < this.tests.length - 1 && (this.runFull || response.checkerResponse)) {
-                this.runTest(i + 1);
-            }
-            else {
-                this.done = true;
-                this.endListeners.forEach(callback => callback.bind(this)(this));
-            }
-        });
+            {...defaultOptions, ...this.forAllTests, ...this.tests[i]})
+            .onAfterEnd((checkerResponse, response) => {
+                // console.log(i);
+                this.responses.push(response);
+                // console.log(i < this.tests.length - 1, this.runFull, response.ok, response.checker === TestResponse.prototype.checker);
+                if (i < this.tests.length - 1 && (this.runFull || response.ok)) {
+                    this.runTest(i + 1);
+                }
+                else {
+                    this.done = true;
+                    this.endListeners.forEach(callback => callback.bind(this)(this));
+                }
+            })
+            .start();
     }
 
     start() {
@@ -84,12 +85,13 @@ export class TestsResponse {
 
     onEnd(callback) {
         this.endListeners.push(callback);
+        return this;
     }
 }
 
 export async function runTests(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
     // return new TestsResponse(forAllTests, tests, options).start();
     return new Promise(resolve => {
-        new TestsResponse(forAllTests, tests, options).start().onEnd(resolve);
+        new TestsResponse(forAllTests, tests, options).onEnd(resolve).start();
     });
 }

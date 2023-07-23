@@ -5,5 +5,8 @@
   "main": "index.js",
   "author": "sizoff",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "pidusage": "^3.0.2"
+  }
 }

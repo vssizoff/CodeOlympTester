@@ -56,13 +56,14 @@ export class TestResponse {
     timeLimitExpended = false;
     ramLimitExpended = false;
     ended = false;
-    checkerResponse;
+    ok;
     code;
     intervalId;
     timeoutId;
     timeIntervalId;
     endListeners = [];
     afterEndListeners = [];
+    cmd;
 
     constructor(cmd, checker = TestResponse.prototype.checker, options = defaultTestOptions) {
         options = {...defaultTestOptions, ...options};
@@ -75,35 +76,28 @@ export class TestResponse {
         this.inputText = options.inputText;
         this.inputFiles = options.inputFiles;
         this.dir = path.resolve(options.dir);
+        this.cmd = cmd;
+    }
+
+    start() {
         this.prepareFiles();
-        // this.process = spawn(os.platform() === 'win32' ? 'powershell.exe' : 'bash', [], {
-        //     cwd: this.dir,
-        //     name: 'xterm-color',
-        //     cols: 80,
-        //     rows: 30
-        // });
-        this.process = spawn(cmd, [], {
+        this.process = spawn(this.cmd, [], {
             cwd: this.dir,
             shell: true
         });
         this.prepareTimeRamLimit();
-        // this.process.write(cmd);
-        // this.process.write(this.inputText);
         this.process.stdin.write(this.inputText);
-        // this.process.onData(data => {
         this.process.stdout.on("data", data => {
             this.response += data.toString();
         });
-        // this.process.onExit(code => {
         this.process.on("exit", code => {
             clearInterval(this.intervalId);
             clearTimeout(this.timeoutId);
             clearInterval(this.timeIntervalId);
             this.ended = true;
-            // this.code = code.exitCode;
             this.code = code
             if (this.code === 0 || this.code === undefined || this.code === null) {
-                this.checkerResponse = this.checker.bind(this)(this.response, this.inputText, this.inputFiles, this);
+                this.ok = this.checker.bind(this)(this.response, this.inputText, this.inputFiles, this);
             }
             while (true) {
                 try {
@@ -113,8 +107,9 @@ export class TestResponse {
                     break;
                 }
             }
-            this.afterEndListeners.forEach(callback => callback.bind(this)(this.checkerResponse, this));
+            this.afterEndListeners.forEach(callback => callback.bind(this)(this.ok, this));
         });
+        return this;
     }
 
     prepareTimeRamLimit() {
@@ -160,13 +155,14 @@ export class TestResponse {
 
     onEnd(callback) {
         this.endListeners.push(callback);
+        return this;
     }
 
     getStatus(obj = testStatusObject) {
         obj = {...testStatusObject, ...obj};
         if (this.timeLimitExpended) return obj.time;
         if (this.ramLimitExpended) return obj.ram;
-        if (this.ended && this.checkerResponse) return obj.success;
+        if (this.ended && this.ok) return obj.success;
         if (this.ended) return obj.failed;
         return obj.testing;
     }
@@ -177,6 +173,7 @@ export class TestResponse {
 
     onAfterEnd(callback) {
         this.afterEndListeners.push(callback);
+        return this;
     }
 }
 
@@ -188,6 +185,6 @@ export async function runTest(cmd, checker = TestResponse.prototype.checker, opt
     // catch (error) {}
     // throw new Error("Error during running test");
     return new Promise(resolve => {
-        new TestResponse(cmd, checker, options).onAfterEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse}));
+        new TestResponse(cmd, checker, options).onAfterEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
     });
 }
