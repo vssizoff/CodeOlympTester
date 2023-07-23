@@ -8,6 +8,7 @@ runTests({cmd: "node test.js", inputFiles: {"test.js": fs.readFileSync("./test.j
     {inputText: "qwertyuiopasdfghjklzxcvbnm \n100\n"},
     {inputText: "abcd \n1000\n"}
 ], {runFull: true}).then(response => {
+    // console.log(response);
     console.log(response.responses.map(elem => elem.response).join("\n"));
 });
 
