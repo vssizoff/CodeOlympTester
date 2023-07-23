@@ -1,0 +1,17 @@
+{
+  "name": "code_olymp_tester",
+  "version": "0.0.0s0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "nodemon": "nodemon main.js"
+  },
+  "author": "sizoff",
+  "license": "ISC",
+  "dependencies": {
+    "node-pty": "^1.0.0",
+    "pidusage": "^3.0.2"
+  },
+  "type": "module"
+}

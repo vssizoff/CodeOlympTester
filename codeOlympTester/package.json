@@ -1,0 +1,9 @@
+{
+  "name": "code_olymp_tester",
+  "version": "0.0.0s0",
+  "description": "",
+  "main": "index.js",
+  "author": "sizoff",
+  "license": "ISC",
+  "type": "module"
+}
