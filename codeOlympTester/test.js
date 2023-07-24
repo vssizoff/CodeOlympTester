@@ -115,14 +115,17 @@ export class TestResponse {
     prepareTimeRamLimit() {
         let stopTime = this.runFull ? this.hardTime : this.maxTime, stopRam = (this.runFull ? this.hardRam : this.maxRam) * 1024 * 1024;
         this.intervalId = setInterval(async () => {
-            let ram = (await pidUsage(this.process.pid)).memory;
-            if (ram > stopRam) {
-                this.process.kill();
-                this.ramLimitExpended = true;
+            try {
+                let ram = (await pidUsage(this.process.pid)).memory;
+                if (ram > stopRam) {
+                    this.process.kill();
+                    this.ramLimitExpended = true;
+                }
+                if (ram > this.ram) {
+                    this.ram = ram;
+                }
             }
-            if (ram > this.ram) {
-                this.ram = ram;
-            }
+            catch (error) {}
         }, 100);
         this.timeoutId = setTimeout(() => {
             this.process.kill();

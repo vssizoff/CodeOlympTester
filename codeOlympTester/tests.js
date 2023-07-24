@@ -33,8 +33,8 @@ export class TestsResponse {
     }
 
     runTest(i = 0) {
-        new TestResponse(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultOptions.cmd,
-            this.tests[i].checker ?? this.forAllTests.checker ?? defaultOptions.checker,
+        let checker = (...args) => (this.tests[i].checker ?? this.forAllTests.checker ?? defaultOptions.checker)(...args, i)
+        new TestResponse(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultOptions.cmd, checker,
             {...defaultOptions, ...this.forAllTests, ...this.tests[i]})
             .onAfterEnd((checkerResponse, response) => {
                 // console.log(i);
