@@ -7,6 +7,7 @@
   "interactive": false,
   "tests": ["", ""],
   "checker": {
+    "default": true,
     "endls": false,
     "spaces": false,
     "structure": [
@@ -32,7 +33,18 @@
         "count": "n",
         "value": [2, 0, 3]
       }
+    ],
+    "info": null,
+    "vars": ["n", "m"],
+    "tests": [
+      {
+        "correctAnswers": [""],
+        "info": null,
+        "vars": {
+          "n": 8,
+          "m": 6
+        }
+      }
     ]
-  },
-  "checkerInfo": []
+  }
 }
