@@ -1,0 +1,22 @@
+{
+  "title": "test",
+  "content": "Text task",
+  "format": "tex || md || html || pdf",
+  "timeLimit": 100,
+  "ramLimit": 100,
+  "interactive": false,
+  "tests": ["", ""],
+  "checker": {
+    "default": false,
+    "useCorrectAnswers": true,
+    "cmd": "node checker.js",
+    "files": {"checker.js": "path"},
+    "info": null,
+    "tests": [
+      {
+        "correctAnswers": [""],
+        "info": null
+      }
+    ]
+  }
+}
