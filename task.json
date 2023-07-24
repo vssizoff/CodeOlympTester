@@ -9,7 +9,30 @@
   "checker": {
     "endls": false,
     "spaces": false,
-    "structure": [[], []]
+    "structure": [
+      [
+        {
+          "type": 1,
+          "var": "n"
+        },
+        {
+          "type": 1,
+          "var": "m"
+        },
+        1
+      ],
+      {
+        "count": "n",
+        "value": {
+          "count": "m",
+          "type": 1
+        }
+      },
+      {
+        "count": "n",
+        "value": [2, 0, 3]
+      }
+    ]
   },
   "checkerInfo": []
 }
