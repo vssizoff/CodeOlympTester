@@ -5,7 +5,7 @@
   "timeLimit": 100,
   "ramLimit": 100,
   "interactive": false,
-  "tests": ["", ""],
+  "tests": [{"text": "", "files": {}}, {"text": "", "files": {}}],
   "checker": {
     "default": false,
     "useCorrectAnswers": false,

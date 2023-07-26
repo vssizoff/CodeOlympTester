@@ -64,6 +64,7 @@ export class TestResponse {
     endListeners = [];
     afterEndListeners = [];
     cmd;
+    outputFiles = {};
 
     constructor(cmd, checker = TestResponse.prototype.checker, options = defaultTestOptions) {
         options = {...defaultTestOptions, ...options};
@@ -97,7 +98,8 @@ export class TestResponse {
             this.ended = true;
             this.code = code
             if (this.code === 0 || this.code === undefined || this.code === null) {
-                this.ok = this.checker.bind(this)(this.response, this.inputText, this.inputFiles, this);
+                fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename, {encoding: "utf8"}));
+                this.ok = this.checker.bind(this)(this.response, this.outputFiles, this.inputText, this.inputFiles, this);
             }
             while (true) {
                 try {
@@ -150,7 +152,7 @@ export class TestResponse {
         });
     }
 
-    checker(response, inputText, inputFiles, testResponse) {
+    checker(response, outputFiles, inputText, inputFiles, testResponse) {
         this.endListeners.forEach(callback => callback.bind(testResponse)(response, inputText, inputFiles, testResponse));
         // console.log(true);
         return true;

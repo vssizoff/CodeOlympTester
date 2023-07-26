@@ -5,45 +5,37 @@
   "timeLimit": 100,
   "ramLimit": 100,
   "interactive": false,
-  "tests": ["", ""],
+  "tests": [{"text": "4 4\n0 1\n1 2\n2 3\n3 0\n", "files": {}}, {"text": "4 3\n0 1\n1 2\n2 3\n", "files": {}}],
   "checker": {
     "default": true,
     "endls": false,
     "spaces": false,
     "finalEndl": false,
     "structure": [
-      [
-        {
-          "type": 1,
-          "var": "n"
-        },
-        {
-          "type": 1,
-          "var": "m"
-        },
-        1
-      ],
       {
         "count": "n",
         "value": {
-          "count": "m",
+          "count": "n",
           "type": 1
         }
-      },
-      {
-        "count": "n",
-        "value": [2, 0, 3]
       }
     ],
     "info": null,
-    "vars": ["n", "m"],
     "tests": [
       {
-        "correctAnswers": [""],
+        "correctAnswers": ["0 1 0 0\n0 0 1 0\n0 0 0 1\n1 0 0 0"],
         "info": null,
         "vars": {
-          "n": 8,
-          "m": 6
+          "n": 4,
+          "m": 4
+        }
+      },
+      {
+        "correctAnswers": ["0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0"],
+        "info": null,
+        "vars": {
+          "n": 4,
+          "m": 3
         }
       }
     ]
