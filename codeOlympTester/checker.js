@@ -1,3 +1,5 @@
+import {Types} from "./types.js";
+
 function compileStructure(structure, response, vars, config) {
     response = response.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
     let newStructure = [], parsedResponse = !config.endls ? (!config.spaces ?
@@ -71,11 +73,45 @@ function compileStructure(structure, response, vars, config) {
 }
 
 function checkStructure(structure, response, vars, config) {
+    response = response.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
     structure = compileStructure(structure, response, vars, config);
+    if (config.trim) response.trim();
     if (config.spaces && config.endls) {
+        response = response.split('\n');
+        let newStructure = [];
+        for (let structureElement of structure) {
 
+            newStructure.push(...structureElement);
+        }
+        for (let i = 0; i < structure.length; i++) {
+            if (Array.isArray(structure[i])) newStructure.push(...structure[i]);
+            else response.splice(i, 1);
+        }
+        response = Array.from(response.join('\n').replaceAll(' \n', ' ').replaceAll('\n', ' '))
+            .filter((value, index, array) => value !== ' ' || (index <= 0 || array[index - 1] !== ' '));
+        if (newStructure.length > response.length) return false;
+        for (let i = 0; i < newStructure.length; i++) {
+            switch (newStructure[i]) {
+                case Types.bool:
+                    let value = response[i].toLowerCase();
+                    if (value !== "true" && value !== "yes" && value !== "1" && value !== "t" && value !== "y" && value !== "false" && value !== "no" && value !== "0" && value !== "f" && value !== "n") {
+                        return false;
+                    }
+                    break;
+                case Types.int:
+                    if (isNaN(Number(response[i])) || response[i].includes('.')) return false;
+                    break;
+                case Types.float:
+                    if (isNaN(Number(response[i]))) return false;
+                    break;
+                case Types.string:
+                    break;
+            }
+        }
     }
     else if (config.endls) {
+        response = response.split('\n').map(elem => Array.from(elem.trimEnd())
+            .filter((value, index, array) => value !== ' ' || (index <= 0 || array[index - 1] !== ' ')));
 
     }
     else if (config.spaces) {
