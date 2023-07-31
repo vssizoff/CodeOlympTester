@@ -10,7 +10,7 @@
     "default": true,
     "endls": false,
     "spaces": false,
-    "finalEndl": false,
+    "trim": true,
     "structure": [
       {
         "count": "n",

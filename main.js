@@ -8,9 +8,9 @@ runTests({
     cmd: "test.exe",
     inputFiles: {"test.exe": fs.readFileSync("./test.exe")},
     checker: defaultChecker(testTask.checker)
-}, testTask.tests, {runFull: true}).then(response => {
+}, testTask.tests.map(({text, files}) => ({inputText: text, inputFiles: files})), {runFull: true}).then(response => {
     // console.log(response);
-    // console.log(response.responses.map(elem => elem.response).join("\n"));
+    console.log(response.status, response.responses.map(elem => elem.status));
 });
 
 // runTest("node test.js", TestResponse.prototype.checker, {

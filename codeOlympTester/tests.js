@@ -35,7 +35,10 @@ export class TestsResponse {
     runTest(i = 0) {
         let checker = (...args) => (this.tests[i].checker ?? this.forAllTests.checker ?? defaultOptions.checker)(...args, i)
         new TestResponse(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultOptions.cmd, checker,
-            {...defaultOptions, ...this.forAllTests, ...this.tests[i]})
+            {
+                ...defaultOptions, ...this.forAllTests, ...this.tests[i],
+                inputFiles: {...this.forAllTests.inputFiles, ...this.tests[i].inputFiles}
+            })
             .onAfterEnd((checkerResponse, response) => {
                 // console.log(i);
                 this.responses.push(response);

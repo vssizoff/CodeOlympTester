@@ -86,10 +86,10 @@ export class TestResponse {
             cwd: this.dir,
             shell: true
         });
-        this.prepareTimeRamLimit();
-        this.process.stdin.write(this.inputText);
+        // this.prepareTimeRamLimit();
         this.process.stdout.on("data", data => {
             this.response += data.toString();
+            // console.log(data.toString());
         });
         this.process.on("exit", code => {
             clearInterval(this.intervalId);
@@ -111,6 +111,7 @@ export class TestResponse {
             }
             this.afterEndListeners.forEach(callback => callback.bind(this)(this.ok, this));
         });
+        this.process.stdin.write(this.inputText);
         return this;
     }
 
@@ -145,11 +146,16 @@ export class TestResponse {
         catch (error) {
             fs.mkdirSync(this.dir);
         }
-        Object.keys(this.inputFiles).forEach(file => {
+        // Object.keys(this.inputFiles).forEach(file => {
+        //     let filePath = `${this.dir}/${file}`;
+        //     if (Array.isArray(this.inputFiles)) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
+        //     else fs.writeFileSync(filePath, this.inputFiles[file]);
+        // });
+        for (let file in this.inputFiles) {
             let filePath = `${this.dir}/${file}`;
-            if (Array.isArray(this.inputFiles)) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
+            if (Array.isArray(this.inputFiles[file])) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
             else fs.writeFileSync(filePath, this.inputFiles[file]);
-        });
+        }
     }
 
     checker(response, outputFiles, inputText, inputFiles, testResponse) {
