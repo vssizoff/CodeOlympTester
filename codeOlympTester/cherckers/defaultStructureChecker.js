@@ -1,10 +1,7 @@
 import {Types} from "../types.js";
-import compileStructure from "./defaultStructureCompiler.js";
 
 export default function checkStructure(structure, response, vars, config) {
     response = response.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
-    structure = compileStructure(structure, response, vars, config);
-    console.log(structure);
     if (config.trim) response = response.trim();
     if (!config.spaces && !config.endls) {
         response = response.split('\n').map(elem => config.trim ? elem.trim() : elem);
