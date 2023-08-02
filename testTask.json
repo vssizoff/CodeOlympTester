@@ -13,6 +13,10 @@
     "trim": true,
     "structure": [
       {
+        "var": "n",
+        "type": 1
+      },
+      {
         "count": "n",
         "value": {
           "count": "n",
@@ -25,18 +29,12 @@
       {
         "correctAnswers": ["0 1 0 0\n0 0 1 0\n0 0 0 1\n1 0 0 0"],
         "info": null,
-        "vars": {
-          "n": 4,
-          "m": 4
-        }
+        "vars": {}
       },
       {
         "correctAnswers": ["0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0"],
         "info": null,
-        "vars": {
-          "n": 4,
-          "m": 3
-        }
+        "vars": {}
       }
     ]
   }
