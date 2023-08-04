@@ -27,12 +27,12 @@
     "info": null,
     "tests": [
       {
-        "correctAnswers": ["0 1 0 0\n0 0 1 0\n0 0 0 1\n1 0 0 0"],
+        "correctAnswers": ["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n1 0 0 0"],
         "info": null,
         "vars": {}
       },
       {
-        "correctAnswers": ["0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0"],
+        "correctAnswers": ["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0"],
         "info": null,
         "vars": {}
       }

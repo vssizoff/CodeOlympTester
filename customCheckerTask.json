@@ -5,14 +5,30 @@
   "timeLimit": 100,
   "ramLimit": 100,
   "interactive": false,
-  "tests": [{"text": "", "files": {}}, {"text": "", "files": {}}],
+  "tests": [
+    {
+      "text": "",
+      "files": {}
+    },
+    {
+      "text": "",
+      "files": {}
+    }
+  ],
   "checker": {
     "default": false,
     "useCorrectAnswers": true,
-    "cmd": "node checker.js",
-    "files": {"checker.js": "path"},
+    "cmd": "checker.exe",
+    "files": {
+      "checker.exe": "./checker.exe",
+      "in.txt": "./in.txt"
+    },
     "info": null,
     "tests": [
+      {
+        "correctAnswers": [""],
+        "info": null
+      },
       {
         "correctAnswers": [""],
         "info": null

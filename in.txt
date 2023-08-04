@@ -1,0 +1,22 @@
+21
+config.files.in.txt
+config
+config.default
+config.useCorrectAnswers
+config.cmd
+/config.files
+config.filesKeys  
+config.info
+config.tests
+config.tests.length
+config.tests.correctAnswers ::::
+config.tests.info ::::
+/outputFiles
+outputFilesKeys  
+/inputFiles
+inputFilesKeys  
+inputText
+test
+test.correctAnswers ::::
+test.info
+testNumber

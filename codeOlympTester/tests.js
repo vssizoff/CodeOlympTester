@@ -15,7 +15,8 @@ export let statusObject = {
     ram: "RAM limit expended on test %test%",
     success: "Success",
     failed: "Failed test %test%",
-    testing: "Testing on test %test%"
+    testing: "Testing on test %test%",
+    structure: "Invalid structure on test %test%"
 }
 
 export class TestsResponse {
@@ -42,8 +43,8 @@ export class TestsResponse {
             .onAfterEnd((checkerResponse, response) => {
                 // console.log(i);
                 this.responses.push(response);
-                // console.log(i < this.tests.length - 1, this.runFull, response.ok, response.checker === TestResponse.prototype.checker);
-                if (i < this.tests.length - 1 && (this.runFull || response.ok)) {
+                // console.log(i < this.tests.length - 1, this.runFull, response.checkerResponse, response.checker === TestResponse.prototype.checker);
+                if (i < this.tests.length - 1 && (this.runFull || response.checkerResponse)) {
                     this.runTest(i + 1);
                 }
                 else {
@@ -63,7 +64,7 @@ export class TestsResponse {
         if (!this.done) return undefined;
         let flag = true;
         this.responses.forEach(elem => {
-            if (elem.ok !== true) flag = false;
+            if (elem.checkerResponse !== 0) flag = false;
         });
         return flag;
     }
@@ -76,7 +77,9 @@ export class TestsResponse {
             if (ans.length !== 0) return;
             if (elem.timeLimitExpended) ans = obj.time.replace("%test%", index.toString());
             if (elem.ramLimitExpended) ans = obj.ram.replace("%test%", index.toString());
-            if (elem.ended) ans = obj.failed.replace("%test%", index.toString());
+            if (elem.ended && elem.checkerResponse === 1) ans = obj.failed.replace("%test%", index.toString());
+            if (elem.ended && elem.checkerResponse === 2) ans = obj.structure.replace("%test%", index.toString());
+            if (elem.ended && elem.checkerResponse !== 0) ans = obj.failed.replace("%test%", index.toString());
         });
         if (ans.length !== 0) return ans;
         return obj.testing.replace("%test%", (this.responses.length - 1).toString());

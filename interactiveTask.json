@@ -7,7 +7,9 @@
   "interactive": true,
   "interactor": {
     "cmd": "node checker.js",
-    "files": {"checker.js": "path"},
+    "files": {
+      "checker.js": "path"
+    },
     "info": null,
     "tests": [
       null

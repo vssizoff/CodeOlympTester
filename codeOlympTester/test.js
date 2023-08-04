@@ -37,7 +37,8 @@ export let testStatusObject = {
     ram: "RAM limit expended",
     success: "Success",
     failed: "Failed",
-    testing: "Testing"
+    testing: "Testing",
+    structure: "Invalid structure"
 }
 
 export class TestResponse {
@@ -56,7 +57,7 @@ export class TestResponse {
     timeLimitExpended = false;
     ramLimitExpended = false;
     ended = false;
-    ok;
+    checkerResponse = -1;
     code;
     intervalId;
     timeoutId;
@@ -91,15 +92,16 @@ export class TestResponse {
             this.response += data.toString();
             // console.log(data.toString());
         });
-        this.process.on("exit", code => {
+        this.process.on("exit", async code => {
             clearInterval(this.intervalId);
             clearTimeout(this.timeoutId);
             clearInterval(this.timeIntervalId);
             this.ended = true;
             this.code = code
             if (this.code === 0 || this.code === undefined || this.code === null) {
-                fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename, {encoding: "utf8"}));
-                this.ok = this.checker.bind(this)(this.response, this.outputFiles, this.inputText, this.inputFiles, this);
+                fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename));
+                this.checkerResponse = this.checker.bind(this)(this.response, this.outputFiles, this.inputText, this.inputFiles, this);
+                if (this.checkerResponse instanceof Promise) this.checkerResponse = await this.checkerResponse;
             }
             while (true) {
                 try {
@@ -109,7 +111,7 @@ export class TestResponse {
                     break;
                 }
             }
-            this.afterEndListeners.forEach(callback => callback.bind(this)(this.ok, this));
+            this.afterEndListeners.forEach(callback => callback.bind(this)(this.checkerResponse, this));
         });
         this.process.stdin.write(this.inputText);
         return this;
@@ -173,7 +175,8 @@ export class TestResponse {
         obj = {...testStatusObject, ...obj};
         if (this.timeLimitExpended) return obj.time;
         if (this.ramLimitExpended) return obj.ram;
-        if (this.ended && this.ok) return obj.success;
+        if (this.ended && this.checkerResponse === 0) return obj.success;
+        if (this.ended && this.checkerResponse === 2) return obj.structure;
         if (this.ended) return obj.failed;
         return obj.testing;
     }

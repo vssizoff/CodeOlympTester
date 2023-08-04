@@ -1,5 +1,4 @@
 export default function compileStructure (structure, response, vars, config) {
-    response = response.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
     let newStructure = [], parsedResponse = !config.endls ? (!config.spaces ?
                 Array.from(response.replaceAll('\n', ' '))
                     .filter((value, index, array) => value !== ' ' || (index <= 0 || array[index - 1] !== ' '))

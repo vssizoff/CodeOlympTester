@@ -1,2 +1,3 @@
 import DefaultChecker from "./default.js";
-export let defaultChecker = DefaultChecker;
+import CustomChecker from "./custom.js";
+export let defaultChecker = DefaultChecker, customChecker = CustomChecker;
