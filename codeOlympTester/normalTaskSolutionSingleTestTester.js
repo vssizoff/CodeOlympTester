@@ -8,19 +8,11 @@ import {defaultTestOptions, TaskSolutionSingleTestTester} from "./taskSolutionSi
 
 export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTester {
     process;
-    response = "";
-    maxTime = defaultTestOptions.maxTime;
-    maxRam = defaultTestOptions.maxRam;
-    runFull = defaultTestOptions.runFull;
-    hardTime = defaultTestOptions.hardTime;
-    hardRam = defaultTestOptions.hardRam;
     inputText = defaultTestOptions.inputText;
-    inputFiles = defaultTestOptions.inputFiles;
-    dir = defaultTestOptions.dir;
     intervalId;
     timeoutId;
     timeIntervalId;
-    outputFiles = {};
+
 
     constructor(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
         super();

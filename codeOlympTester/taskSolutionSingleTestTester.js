@@ -30,6 +30,14 @@ export class TaskSolutionSingleTestTester {
     endListeners = [];
     afterEndListeners = [];
     cmd;
+    maxTime = defaultTestOptions.maxTime;
+    maxRam = defaultTestOptions.maxRam;
+    runFull = defaultTestOptions.runFull;
+    hardTime = defaultTestOptions.hardTime;
+    hardRam = defaultTestOptions.hardRam;
+    inputFiles = defaultTestOptions.inputFiles;
+    dir = defaultTestOptions.dir;
+    outputFiles = {};
 
 
     start() {}
