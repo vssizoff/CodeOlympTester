@@ -1,10 +1,7 @@
-// import {spawn} from "node-pty";
 import {spawn} from "child_process";
-import pidUsage from "pidusage";
 import * as fs from "fs";
 import * as path from "path";
 import {defaultTestOptions, TaskSolutionSingleTestTester} from "./taskSolutionSingleTestTester.js";
-// import * as os from "os";
 
 export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTester {
     process;

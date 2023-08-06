@@ -4,6 +4,13 @@ import {spawn} from "child_process";
 import fs from "fs";
 import pidUsage from "pidusage";
 
+export let defaultInteractorConfig = {
+    cmd: "node",
+    files: {},
+    info: null,
+    tests: []
+}
+
 export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleTestTester {
     process;
     interactorProcess;
@@ -16,7 +23,7 @@ export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleT
     interactorTimeTimeoutId;
 
 
-    constructor(cmd, interactor, options = defaultTestOptions) {
+    constructor(cmd, interactorConfig = defaultInteractorConfig, options = defaultTestOptions) {
         super();
         options = {...defaultTestOptions, ...options};
         this.maxTime = options.maxTime;
@@ -27,10 +34,10 @@ export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleT
         this.inputFiles = options.inputFiles;
         this.dir = path.resolve(options.dir);
         this.cmd = cmd;
-        this.interactorCmd = interactor.cmd;
-        this.interactorFiles = interactor.files;
-        this.interactorInfo = interactor.info;
-        this.interactorTests = interactor.tests;
+        this.interactorCmd = interactorConfig.cmd;
+        this.interactorFiles = interactorConfig.files;
+        this.interactorInfo = interactorConfig.info;
+        this.interactorTests = interactorConfig.tests;
     }
 
     start() {
