@@ -16,9 +16,11 @@ JSON.safeStringify = (obj, indent = 2) => {
 
 export * from "./taskSolutionSingleTestTester.js";
 export * from "./normalTaskSolutionSingleTestTester.js";
+export * from "./interactiveTaskSolutionSingleTestTester.js";
 
 export * from "./taskSolutionTester.js";
 export * from "./normalTaskSolutionTester.js";
+export * from "./interactiveTaskSolutionTester.js";
 
 export * from "./slot.js";
 export * from "./slotManager.js";
