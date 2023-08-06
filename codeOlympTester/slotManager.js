@@ -1,5 +1,5 @@
 import {Slot} from "./slot.js";
-import {defaultOptions, defaultTestsOptions} from "./tests.js";
+import {defaultOptions, defaultTestsOptions} from "./taskSolutionTester.js";
 
 export class SlotManager {
     slots = [];

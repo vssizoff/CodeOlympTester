@@ -1,4 +1,5 @@
-import {defaultOptions, defaultTestsOptions, runTests} from "./tests.js";
+import {defaultOptions, defaultTestsOptions} from "./taskSolutionTester.js";
+import {runTaskSolutionTest} from "./runers.js";
 
 export class Slot {
     dir;
@@ -11,7 +12,7 @@ export class Slot {
     async runTests(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
         return new Promise(resolve => {
             this.queue.push(async next => {
-                resolve(await runTests({dir: this.dir, ...forAllTests}, tests, options));
+                resolve(await runTaskSolutionTest({dir: this.dir, ...forAllTests}, tests, options));
                 next();
             });
             if (this.queue.length === 1) this.nextTest();
