@@ -1,3 +1,5 @@
+import fs from "fs";
+
 export let defaultTestOptions = {
     maxTime: 100,
     maxRam: 10000,
@@ -41,6 +43,25 @@ export class TaskSolutionSingleTestTester {
 
 
     start() {}
+
+    prepareFiles() {
+        try {
+            fs.accessSync(this.dir);
+        }
+        catch (error) {
+            fs.mkdirSync(this.dir);
+        }
+        // Object.keys(this.inputFiles).forEach(file => {
+        //     let filePath = `${this.dir}/${file}`;
+        //     if (Array.isArray(this.inputFiles)) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
+        //     else fs.writeFileSync(filePath, this.inputFiles[file]);
+        // });
+        for (let file in this.inputFiles) {
+            let filePath = `${this.dir}/${file}`;
+            if (Array.isArray(this.inputFiles[file])) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
+            else fs.writeFileSync(filePath, this.inputFiles[file]);
+        }
+    }
 
     onEnd(callback) {
         this.endListeners.push(callback);

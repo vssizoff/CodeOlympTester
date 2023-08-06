@@ -89,25 +89,6 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
         }, 1);
     }
 
-    prepareFiles() {
-        try {
-            fs.accessSync(this.dir);
-        }
-        catch (error) {
-            fs.mkdirSync(this.dir);
-        }
-        // Object.keys(this.inputFiles).forEach(file => {
-        //     let filePath = `${this.dir}/${file}`;
-        //     if (Array.isArray(this.inputFiles)) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
-        //     else fs.writeFileSync(filePath, this.inputFiles[file]);
-        // });
-        for (let file in this.inputFiles) {
-            let filePath = `${this.dir}/${file}`;
-            if (Array.isArray(this.inputFiles[file])) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
-            else fs.writeFileSync(filePath, this.inputFiles[file]);
-        }
-    }
-
     checker(response, outputFiles, inputText, inputFiles, testResponse) {
         this.endListeners.forEach(callback => callback.bind(testResponse)(response, inputText, inputFiles, testResponse));
         // console.log(true);

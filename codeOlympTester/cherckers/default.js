@@ -15,7 +15,7 @@ export default function defaultChecker(checkerConfig) {
             endls: checkerConfig.endls,
             spaces: checkerConfig.spaces,
             trim: checkerConfig.trim,
-        })) return false;
+        })) return 2;
 
         // let tmp = [];
         // structure.forEach(elem => Array.isArray(elem) ? tmp.push(...elem) : tmp.push(elem));
@@ -50,9 +50,9 @@ export default function defaultChecker(checkerConfig) {
         });
 
         for (let a of ans) {
-            if (!a) return false;
+            if (!a) return 1;
         }
 
-        return true;
+        return 0;
     }
 }

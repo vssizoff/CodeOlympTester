@@ -13,5 +13,5 @@ runTaskSolutionTest({
     // checker: customChecker(customCheckerTask.checker, path.resolve("./checker"))
 }, testTask.tests.map(({text, files}) => ({inputText: text, inputFiles: files})), {runFull: true}).then(response => {
     // console.log(response);
-    console.log(response.status, response.responses.map(elem => elem.status));
+    console.log(response.status, response.responses.map(elem => elem.status), response.responses.map(({process, inputFiles, ...a}) => a));
 });

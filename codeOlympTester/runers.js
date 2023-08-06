@@ -1,6 +1,6 @@
 import {defaultOptions, defaultTestsOptions} from "./taskSolutionTester.js";
 import {NormalTaskSolutionTester} from "./normalTaskSolutionTester.js";
-import {InteractiveTaskSolutionTester} from "./interactiveTaskSolutionTester";
+import {InteractiveTaskSolutionTester} from "./interactiveTaskSolutionTester.js";
 import {defaultTestOptions} from "./taskSolutionSingleTestTester.js";
 import {NormalTaskSolutionSingleTestTester} from "./normalTaskSolutionSingleTestTester.js";
 import {InteractiveTaskSolutionSingleTestTester} from "./interactiveTaskSolutionSingleTestTester.js";
