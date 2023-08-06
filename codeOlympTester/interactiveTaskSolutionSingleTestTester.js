@@ -45,7 +45,7 @@ export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleT
         let verdict = -1, ended = [undefined, undefined], end = (code, interactor) => {
             ended[interactor ? 1 : 0] = code;
             if (ended[0] === undefined || ended[1] === undefined) return;
-            if (this.code === 0 || this.code === undefined || this.code === null) {
+            if (ended[0] === 0 && ended[1] === 0) {
                 fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename));
             }
             while (true) {
