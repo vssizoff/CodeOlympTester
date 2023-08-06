@@ -3,7 +3,7 @@ import {NormalTaskSolutionTester} from "./normalTaskSolutionTester.js";
 import {InteractiveTaskSolutionTester} from "./interactiveTaskSolutionTester.js";
 import {defaultTestOptions} from "./taskSolutionSingleTestTester.js";
 import {NormalTaskSolutionSingleTestTester} from "./normalTaskSolutionSingleTestTester.js";
-import {InteractiveTaskSolutionSingleTestTester} from "./interactiveTaskSolutionSingleTestTester.js";
+import {defaultInteractorConfig, InteractiveTaskSolutionSingleTestTester} from "./interactiveTaskSolutionSingleTestTester.js";
 
 export async function runNormalTaskSolutionSingleTest(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
     return new Promise(resolve => {
@@ -11,14 +11,14 @@ export async function runNormalTaskSolutionSingleTest(cmd, checker = NormalTaskS
     });
 }
 
-export async function runInteractiveTaskSolutionSingleTest(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
+export async function runInteractiveTaskSolutionSingleTest(cmd, interactorConfig = defaultInteractorConfig, options = defaultTestOptions) {
     return new Promise(resolve => {
-        new InteractiveTaskSolutionSingleTestTester(cmd, checker, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
+        new InteractiveTaskSolutionSingleTestTester(cmd, interactorConfig, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
     });
 }
 
-export async function runTaskSolutionSingleTest(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions, interactive = false) {
-    return interactive ? runInteractiveTaskSolutionSingleTest(cmd, checker, options) : runNormalTaskSolutionSingleTest(cmd, checker, options);
+export async function runTaskSolutionSingleTest(cmd, checkerOrInteractorConfig = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions, interactive = false) {
+    return interactive ? runInteractiveTaskSolutionSingleTest(cmd, checkerOrInteractorConfig, options) : runNormalTaskSolutionSingleTest(cmd, checkerOrInteractorConfig, options);
 }
 
 export async function runNormalTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {

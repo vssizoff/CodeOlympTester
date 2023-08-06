@@ -1,10 +1,15 @@
 import {NormalTaskSolutionSingleTestTester} from "./normalTaskSolutionSingleTestTester.js";
 import {TaskSolutionTester, defaultOptions, defaultTestsOptions} from "./taskSolutionTester.js";
 
-export class NormalTaskSolutionTester extends TaskSolutionTester {
-    tests = [];
+export let defaultNormalOptions = {
+    checker: NormalTaskSolutionSingleTestTester.prototype.checker,
+    ...defaultOptions
+}
 
-    constructor(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
+export class NormalTaskSolutionTester extends TaskSolutionTester {
+    forAllTests = defaultNormalOptions;
+
+    constructor(forAllTests = defaultNormalOptions, tests = [defaultNormalOptions], options = defaultTestsOptions) {
         super();
         this.forAllTests = forAllTests;
         this.tests = tests;
@@ -12,29 +17,22 @@ export class NormalTaskSolutionTester extends TaskSolutionTester {
     }
 
     runTest(i = 0) {
-        let checker = (...args) => (this.tests[i].checker ?? this.forAllTests.checker ?? defaultOptions.checker)(...args, i)
-        new NormalTaskSolutionSingleTestTester(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultOptions.cmd, checker,
+        let checker = (...args) => (this.tests[i].checker ?? this.forAllTests.checker ?? defaultNormalOptions.checker)(...args, i)
+        new NormalTaskSolutionSingleTestTester(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultNormalOptions.cmd, checker,
             {
-                ...defaultOptions, ...this.forAllTests, ...this.tests[i],
+                ...defaultNormalOptions, ...this.forAllTests, ...this.tests[i],
                 inputFiles: {...this.forAllTests.inputFiles, ...this.tests[i].inputFiles}
             })
-            .onEnd((checkerResponse, response) => {
-                // console.log(i);
+            .onEnd((verdict, response) => {
                 this.responses.push(response);
-                // console.log(i < this.tests.length - 1, this.runFull, response.checkerResponse, response.checker === TestResponse.prototype.checker);
                 if (i < this.tests.length - 1 && (this.runFull || response.checkerResponse)) {
                     this.runTest(i + 1);
                 }
                 else {
                     this.done = true;
-                    this.endListeners.forEach(callback => callback.bind(this)(this));
+                    this.runEndListeners();
                 }
             })
             .start();
-    }
-
-    start() {
-        this.runTest();
-        return this;
     }
 }

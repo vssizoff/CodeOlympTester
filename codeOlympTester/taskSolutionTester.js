@@ -1,9 +1,7 @@
 import {defaultTestOptions} from "./taskSolutionSingleTestTester.js";
-import {NormalTaskSolutionSingleTestTester} from "./normalTaskSolutionSingleTestTester.js";
 
 export let defaultOptions = {
     cmd: "",
-    checker: NormalTaskSolutionSingleTestTester.prototype.checker,
     ...defaultTestOptions
 }
 
@@ -22,6 +20,7 @@ export let statusObject = {
 
 export class TaskSolutionTester {
     forAllTests = defaultOptions;
+    tests = [];
     responses = [];
     runFull = false;
     done = false;
@@ -29,7 +28,10 @@ export class TaskSolutionTester {
 
     runTest(i = 0) {}
 
-    start() {}
+    start() {
+        this.runTest();
+        return this;
+    }
 
     get ok() {
         if (!this.done) return undefined;
@@ -63,5 +65,9 @@ export class TaskSolutionTester {
     onEnd(callback) {
         this.endListeners.push(callback);
         return this;
+    }
+
+    runEndListeners() {
+        this.endListeners.forEach(callback => callback.bind(this)(this));
     }
 }
