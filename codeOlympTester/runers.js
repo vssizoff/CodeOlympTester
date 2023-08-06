@@ -7,13 +7,13 @@ import {InteractiveTaskSolutionSingleTestTester} from "./interactiveTaskSolution
 
 export async function runNormalTaskSolutionSingleTest(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
     return new Promise(resolve => {
-        new NormalTaskSolutionSingleTestTester(cmd, checker, options).onAfterEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
+        new NormalTaskSolutionSingleTestTester(cmd, checker, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
     });
 }
 
 export async function runInteractiveTaskSolutionSingleTest(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
     return new Promise(resolve => {
-        new InteractiveTaskSolutionSingleTestTester(cmd, checker, options).onAfterEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
+        new InteractiveTaskSolutionSingleTestTester(cmd, checker, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
     });
 }
 

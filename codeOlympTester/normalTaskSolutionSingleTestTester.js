@@ -12,6 +12,7 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
     intervalId;
     timeoutId;
     timeIntervalId;
+    checkerListeners = [];
 
 
     constructor(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
@@ -48,8 +49,8 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
             this.code = code
             if (this.code === 0 || this.code === undefined || this.code === null) {
                 fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename));
-                this.checkerResponse = this.checker.bind(this)(this.response, this.outputFiles, this.inputText, this.inputFiles, this);
-                if (this.checkerResponse instanceof Promise) this.checkerResponse = await this.checkerResponse;
+                this.verdict = this.checker.bind(this)(this.response, this.outputFiles, this.inputText, this.inputFiles, this);
+                if (this.verdict instanceof Promise) this.verdict = await this.verdict;
             }
             while (true) {
                 try {
@@ -59,7 +60,8 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
                     break;
                 }
             }
-            this.afterEndListeners.forEach(callback => callback.bind(this)(this.checkerResponse, this));
+            // this.afterEndListeners.forEach(callback => callback.bind(this)(this.verdict, this));
+            this.runEndListeners(this, this.verdict, this);
         });
         this.process.stdin.write(this.inputText);
         return this;
@@ -90,9 +92,19 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
     }
 
     checker(response, outputFiles, inputText, inputFiles, testResponse) {
-        this.endListeners.forEach(callback => callback.bind(testResponse)(response, inputText, inputFiles, testResponse));
+        // this.endListeners.forEach(callback => callback.bind(testResponse)(response, inputText, inputFiles, testResponse));
+        this.runCheckerListeners(testResponse, response, inputText, inputFiles, testResponse)
         // console.log(true);
         return true;
+    }
+
+    onChecker(callback) {
+        this.checkerListeners.push(callback);
+        return this;
+    }
+
+    runCheckerListeners(bind = this, ...args) {
+        this.checkerListeners.forEach(callback => callback.bind(bind)(...args));
     }
 }
 

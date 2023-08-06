@@ -27,10 +27,9 @@ export class TaskSolutionSingleTestTester {
     timeLimitExpended = false;
     ramLimitExpended = false;
     ended = false;
-    checkerResponse = -1;
+    verdict = -1;
     code;
     endListeners = [];
-    afterEndListeners = [];
     cmd;
     maxTime = defaultTestOptions.maxTime;
     maxRam = defaultTestOptions.maxRam;
@@ -51,11 +50,6 @@ export class TaskSolutionSingleTestTester {
         catch (error) {
             fs.mkdirSync(this.dir);
         }
-        // Object.keys(this.inputFiles).forEach(file => {
-        //     let filePath = `${this.dir}/${file}`;
-        //     if (Array.isArray(this.inputFiles)) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
-        //     else fs.writeFileSync(filePath, this.inputFiles[file]);
-        // });
         for (let file in this.inputFiles) {
             let filePath = `${this.dir}/${file}`;
             if (Array.isArray(this.inputFiles[file])) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
@@ -63,17 +57,12 @@ export class TaskSolutionSingleTestTester {
         }
     }
 
-    onEnd(callback) {
-        this.endListeners.push(callback);
-        return this;
-    }
-
     getStatus(obj = testStatusObject) {
         obj = {...testStatusObject, ...obj};
         if (this.timeLimitExpended) return obj.time;
         if (this.ramLimitExpended) return obj.ram;
-        if (this.ended && this.checkerResponse === 0) return obj.success;
-        if (this.ended && this.checkerResponse === 2) return obj.structure;
+        if (this.ended && this.verdict === 0) return obj.success;
+        if (this.ended && this.verdict === 2) return obj.structure;
         if (this.ended) return obj.failed;
         return obj.testing;
     }
@@ -82,8 +71,12 @@ export class TaskSolutionSingleTestTester {
         return this.getStatus();
     }
 
-    onAfterEnd(callback) {
-        this.afterEndListeners.push(callback);
+    onEnd(callback) {
+        this.endListeners.push(callback);
         return this;
+    }
+
+    runEndListeners(bind = this, ...args) {
+        this.endListeners.forEach(callback => callback.bind(this)(this.verdict, this));
     }
 }

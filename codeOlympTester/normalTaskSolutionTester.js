@@ -18,7 +18,7 @@ export class NormalTaskSolutionTester extends TaskSolutionTester {
                 ...defaultOptions, ...this.forAllTests, ...this.tests[i],
                 inputFiles: {...this.forAllTests.inputFiles, ...this.tests[i].inputFiles}
             })
-            .onAfterEnd((checkerResponse, response) => {
+            .onEnd((checkerResponse, response) => {
                 // console.log(i);
                 this.responses.push(response);
                 // console.log(i < this.tests.length - 1, this.runFull, response.checkerResponse, response.checker === TestResponse.prototype.checker);
