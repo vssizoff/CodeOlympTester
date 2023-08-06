@@ -2,15 +2,18 @@ import {defaultTestOptions, TaskSolutionSingleTestTester} from "./taskSolutionSi
 import path from "path";
 import {spawn} from "child_process";
 import fs from "fs";
+import pidUsage from "pidusage";
 
 export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleTestTester {
-    process = spawn("node");
-    interactorProcess = spawn("node");
+    process;
+    interactorProcess;
     interactorCmd;
     interactorFiles = {};
     interactorInfo;
     interactorTests = [];
     verdictCommand = undefined;
+    interactorRamIntervalId;
+    interactorTimeTimeoutId;
 
 
     constructor(cmd, interactor, options = defaultTestOptions) {
@@ -31,8 +34,6 @@ export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleT
     }
 
     start() {
-        this.interactorProcess.kill("SIGINT");
-        this.process.kill("SIGINT");
         this.prepareFiles();
         this.interactorProcess = spawn(this.interactorCmd, {
             cwd: this.dir,
@@ -42,6 +43,8 @@ export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleT
             cwd: this.dir,
             shell: true
         });
+        this.prepareLimits(this.process);
+        this.prepareInteractorLimits();
         let verdict = -1, ended = [undefined, undefined], end = (code, interactor) => {
             ended[interactor ? 1 : 0] = code;
             if (ended[0] === undefined || ended[1] === undefined) return;
@@ -76,6 +79,24 @@ export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleT
         this.process.stdout.on("data", data => this.interactorProcess.stdin.write(data));
     }
 
+    prepareInteractorLimits() {
+        this.interactorTimeTimeoutId = setTimeout(() => {
+            this.killProcesses();
+            this.timeLimitExpended = true;
+        }, defaultTestOptions.hardTime);
+        let stopRam = defaultTestOptions.hardRam * 1024 * 1024;
+        this.interactorRamIntervalId = setInterval(async () => {
+            try {
+                let ram = (await pidUsage(this.interactorProcess.pid)).memory;
+                if (ram > stopRam) {
+                    this.killProcesses();
+                    this.ramLimitExpended = true;
+                }
+            }
+            catch (error) {}
+        }, 100);
+    }
+
     prepareFiles() {
         super.prepareFiles();
         for (let file in this.interactorFiles) {
@@ -83,5 +104,15 @@ export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleT
             if (Array.isArray(this.interactorFiles[file])) fs.writeFileSync(filePath, this.interactorFiles[file][0], {encoding: this.interactorFiles[file][1]});
             else fs.writeFileSync(filePath, this.interactorFiles[file]);
         }
+    }
+
+    stopTimeouts() {
+        super.stopTimeouts(this.ramIntervalId, this.timeTimeoutId, this.timeCounterId);
+        clearTimeout(this.interactorTimeTimeoutId);
+        clearInterval(this.interactorRamIntervalId);
+    }
+
+    killProcesses() {
+        super.killProcesses(this.process, this.interactorProcess);
     }
 }

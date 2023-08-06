@@ -1,4 +1,5 @@
 import fs from "fs";
+import pidUsage from "pidusage";
 
 export let defaultTestOptions = {
     maxTime: 100,
@@ -39,6 +40,9 @@ export class TaskSolutionSingleTestTester {
     inputFiles = defaultTestOptions.inputFiles;
     dir = defaultTestOptions.dir;
     outputFiles = {};
+    ramIntervalId;
+    timeTimeoutId;
+    timeCounterId;
 
 
     start() {}
@@ -55,6 +59,50 @@ export class TaskSolutionSingleTestTester {
             if (Array.isArray(this.inputFiles[file])) fs.writeFileSync(filePath, this.inputFiles[file][0], {encoding: this.inputFiles[file][1]});
             else fs.writeFileSync(filePath, this.inputFiles[file]);
         }
+    }
+
+    prepareTimeLimit(process) {
+        let stopTime = this.runFull ? this.hardTime : this.maxTime;
+        this.timeTimeoutId = setTimeout(() => {
+            this.killProcesses(process);
+            this.timeLimitExpended = true;
+        }, stopTime);
+        this.timeCounterId = setInterval(() => {
+            this.time++;
+        }, 1);
+    }
+
+    prepareRamLimit(process) {
+        let stopRam = (this.runFull ? this.hardRam : this.maxRam) * 1024 * 1024;
+        this.ramIntervalId = setInterval(async () => {
+            try {
+                let ram = (await pidUsage(process.pid)).memory;
+                if (ram > stopRam) {
+                    this.killProcesses(process);
+                    this.ramLimitExpended = true;
+                }
+                if (ram > this.ram) {
+                    this.ram = ram;
+                }
+            }
+            catch (error) {}
+        }, 100);
+    }
+
+    prepareLimits(process) {
+        this.prepareTimeLimit(process);
+        this.prepareRamLimit(process);
+    }
+
+    stopTimeouts(intervalId1 = this.ramIntervalId, timeoutId = this.timeTimeoutId, intervalId2 = this.timeCounterId) {
+        clearInterval(intervalId1);
+        clearTimeout(timeoutId);
+        clearInterval(intervalId2);
+    }
+
+    killProcesses(...processes) {
+        this.stopTimeouts();
+        processes.forEach(process => process.kill("SIGINT"));
     }
 
     getStatus(obj = testStatusObject) {

@@ -9,9 +9,6 @@ import {defaultTestOptions, TaskSolutionSingleTestTester} from "./taskSolutionSi
 export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTester {
     process;
     inputText = defaultTestOptions.inputText;
-    intervalId;
-    timeoutId;
-    timeIntervalId;
     checkerListeners = [];
 
 
@@ -36,15 +33,10 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
             cwd: this.dir,
             shell: true
         });
-        // this.prepareTimeRamLimit();
-        this.process.stdout.on("data", data => {
-            this.response += data.toString();
-            // console.log(data.toString());
-        });
+        this.prepareLimits(this.process);
+        this.process.stdout.on("data", data => this.response += data.toString());
         this.process.on("exit", async code => {
-            clearInterval(this.intervalId);
-            clearTimeout(this.timeoutId);
-            clearInterval(this.timeIntervalId);
+            this.stopTimeouts();
             this.ended = true;
             this.code = code
             if (this.code === 0 || this.code === undefined || this.code === null) {
@@ -67,30 +59,6 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
         return this;
     }
 
-    prepareTimeRamLimit() {
-        let stopTime = this.runFull ? this.hardTime : this.maxTime, stopRam = (this.runFull ? this.hardRam : this.maxRam) * 1024 * 1024;
-        this.intervalId = setInterval(async () => {
-            try {
-                let ram = (await pidUsage(this.process.pid)).memory;
-                if (ram > stopRam) {
-                    this.process.kill();
-                    this.ramLimitExpended = true;
-                }
-                if (ram > this.ram) {
-                    this.ram = ram;
-                }
-            }
-            catch (error) {}
-        }, 100);
-        this.timeoutId = setTimeout(() => {
-            this.process.kill();
-            this.timeLimitExpended = true;
-        }, stopTime);
-        this.timeIntervalId = setInterval(() => {
-            this.time++;
-        }, 1);
-    }
-
     checker(response, outputFiles, inputText, inputFiles, testResponse) {
         // this.endListeners.forEach(callback => callback.bind(testResponse)(response, inputText, inputFiles, testResponse));
         this.runCheckerListeners(testResponse, response, inputText, inputFiles, testResponse)
@@ -105,6 +73,10 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
 
     runCheckerListeners(bind = this, ...args) {
         this.checkerListeners.forEach(callback => callback.bind(bind)(...args));
+    }
+
+    killProcess() {
+        super.killProcesses(this.process);
     }
 }
 
