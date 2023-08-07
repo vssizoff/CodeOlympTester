@@ -45,6 +45,8 @@
           "m": 6
         }
       }
-    ]
+    ],
+    "stdout": false,
+    "file": "out.txt"
   }
 }

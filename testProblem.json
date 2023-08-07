@@ -36,6 +36,7 @@
         "info": null,
         "vars": {}
       }
-    ]
+    ],
+    "stdout": true
   }
 }

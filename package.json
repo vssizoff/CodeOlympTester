@@ -11,6 +11,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "pidusage": "^3.0.2"
+    "auto-buffer-encoding": "^0.0.0",
+    "pidusage": "^3.0.2",
+    "safe-stringify-simple": "^0.0.1"
   }
 }

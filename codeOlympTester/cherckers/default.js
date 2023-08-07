@@ -1,10 +1,12 @@
 import checkStructure from "./defaultStructureChecker.js";
 import compileStructure from "./defaultStructureCompiler.js";
 import {Types} from "../types.js";
+import {BufferToString} from "auto-buffer-encoding";
 
 export default function defaultChecker(checkerConfig) {
     if (!checkerConfig.default) return;
     return function (response, outputFiles, inputText, inputFiles, testResponse, testNumber) {
+        if (!checkerConfig.stdout) response = BufferToString(outputFiles[checkerConfig.file]);
         response = response.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
         let test = checkerConfig.tests[testNumber], structure = compileStructure(checkerConfig.structure, response, test.vars, {
             endls: checkerConfig.endls,
