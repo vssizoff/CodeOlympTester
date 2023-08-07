@@ -2,7 +2,7 @@ import * as fs from "fs";
 import {customChecker, defaultChecker, runProblemSolutionTester} from "./codeOlympTester/index.js";
 import * as path from "path";
 
-let testProblem = JSON.parse(fs.readFileSync("./testTask.json", {encoding: "utf8"}));
+let testProblem = JSON.parse(fs.readFileSync("./testProblem.json", {encoding: "utf8"}));
 let customCheckerProblem = JSON.parse(fs.readFileSync("./customCheckerProblem.json", {encoding: "utf8"}));
 Object.keys(customCheckerProblem.checker.files).forEach(key => customCheckerProblem.checker.files[key] = fs.readFileSync(key));
 

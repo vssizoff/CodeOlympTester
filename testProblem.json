@@ -1,0 +1,41 @@
+{
+  "title": "test",
+  "content": "Test problem",
+  "format": "tex || md || html || pdf",
+  "timeLimit": 100,
+  "ramLimit": 100,
+  "interactive": false,
+  "tests": [{"text": "4 4\n0 1\n1 2\n2 3\n3 0\n", "files": {}}, {"text": "4 3\n0 1\n1 2\n2 3\n", "files": {}}],
+  "checker": {
+    "default": true,
+    "endls": false,
+    "spaces": false,
+    "trim": true,
+    "structure": [
+      {
+        "var": "n",
+        "type": 1
+      },
+      {
+        "count": "n",
+        "value": {
+          "count": "n",
+          "type": 1
+        }
+      }
+    ],
+    "info": null,
+    "tests": [
+      {
+        "correctAnswers": ["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n1 0 0 0"],
+        "info": null,
+        "vars": {}
+      },
+      {
+        "correctAnswers": ["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0"],
+        "info": null,
+        "vars": {}
+      }
+    ]
+  }
+}
