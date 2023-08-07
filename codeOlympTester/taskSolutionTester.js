@@ -26,10 +26,20 @@ export class TaskSolutionTester {
     done = false;
     endListeners = [];
 
-    runTest(i = 0) {}
+    runTest(onEnd, i = 0) {}
 
     start() {
-        this.runTest();
+        let callback = (verdict, response, i) => {
+            this.responses.push(response);
+            if (i < this.tests.length - 1 && (this.runFull || !verdict)) {
+                this.runTest(callback, i + 1);
+            }
+            else {
+                this.done = true;
+                this.runEndListeners();
+            }
+        };
+        this.runTest(callback);
         return this;
     }
 
