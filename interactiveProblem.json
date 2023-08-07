@@ -1,0 +1,18 @@
+{
+  "title": "test",
+  "content": "Test problem",
+  "format": "tex || md || html || pdf",
+  "timeLimit": 100,
+  "ramLimit": 100,
+  "interactive": true,
+  "interactor": {
+    "cmd": "node checker.js",
+    "files": {
+      "checker.js": "path"
+    },
+    "info": null,
+    "tests": [
+      null
+    ]
+  }
+}

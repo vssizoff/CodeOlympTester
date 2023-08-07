@@ -1,38 +1,38 @@
-import {defaultOptions, defaultTestsOptions} from "./taskSolutionTester.js";
-import {NormalTaskSolutionTester} from "./normalTaskSolutionTester.js";
-import {InteractiveTaskSolutionTester} from "./interactiveTaskSolutionTester.js";
-import {defaultTestOptions} from "./taskSolutionSingleTestTester.js";
-import {NormalTaskSolutionSingleTestTester} from "./normalTaskSolutionSingleTestTester.js";
-import {defaultInteractorConfig, InteractiveTaskSolutionSingleTestTester} from "./interactiveTaskSolutionSingleTestTester.js";
+import {defaultOptions, defaultTestsOptions} from "./problemSolutionTester.js";
+import {NormalProblemSolutionTester} from "./normalProblemSolutionTester.js";
+import {InteractiveProblemSolutionTester} from "./interactiveProblemSolutionTester.js";
+import {defaultTestOptions} from "./problemSolutionSingleTestTester.js";
+import {NormalProblemSolutionSingleTestTester} from "./normalProblemSolutionSingleTestTester.js";
+import {defaultInteractorConfig, InteractiveProblemSolutionSingleTestTester} from "./interactiveProblemSolutionSingleTestTester.js";
 
-export async function runNormalTaskSolutionSingleTest(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
+export async function runNormalProblemSolutionSingleTest(cmd, checker = NormalProblemSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
     return new Promise(resolve => {
-        new NormalTaskSolutionSingleTestTester(cmd, checker, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
+        new NormalProblemSolutionSingleTestTester(cmd, checker, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
     });
 }
 
-export async function runInteractiveTaskSolutionSingleTest(cmd, interactorConfig = defaultInteractorConfig, options = defaultTestOptions) {
+export async function runInteractiveProblemSolutionSingleTest(cmd, interactorConfig = defaultInteractorConfig, options = defaultTestOptions) {
     return new Promise(resolve => {
-        new InteractiveTaskSolutionSingleTestTester(cmd, interactorConfig, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
+        new InteractiveProblemSolutionSingleTestTester(cmd, interactorConfig, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
     });
 }
 
-export async function runTaskSolutionSingleTest(cmd, checkerOrInteractorConfig = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions, interactive = false) {
-    return interactive ? runInteractiveTaskSolutionSingleTest(cmd, checkerOrInteractorConfig, options) : runNormalTaskSolutionSingleTest(cmd, checkerOrInteractorConfig, options);
+export async function runProblemSolutionSingleTest(cmd, checkerOrInteractorConfig = NormalProblemSolutionSingleTestTester.prototype.checker, options = defaultTestOptions, interactive = false) {
+    return interactive ? runInteractiveProblemSolutionSingleTest(cmd, checkerOrInteractorConfig, options) : runNormalProblemSolutionSingleTest(cmd, checkerOrInteractorConfig, options);
 }
 
-export async function runNormalTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
+export async function runNormalProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
     return new Promise(resolve => {
-        new NormalTaskSolutionTester(forAllTests, tests, options).onEnd(resolve).start();
+        new NormalProblemSolutionTester(forAllTests, tests, options).onEnd(resolve).start();
     });
 }
 
-export async function runInteractiveTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
+export async function runInteractiveProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
     return new Promise(resolve => {
-        new InteractiveTaskSolutionTester(forAllTests, tests, options).onEnd(resolve).start();
+        new InteractiveProblemSolutionTester(forAllTests, tests, options).onEnd(resolve).start();
     });
 }
 
-export async function runTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
-    return interactive ? runInteractiveTaskSolutionTest(forAllTests, tests, options) : runNormalTaskSolutionTest(forAllTests, tests, options);
+export async function runProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
+    return interactive ? runInteractiveProblemSolutionTester(forAllTests, tests, options) : runNormalProblemSolutionTester(forAllTests, tests, options);
 }

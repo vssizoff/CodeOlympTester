@@ -21,7 +21,7 @@ export let testStatusObject = {
     structure: "Invalid structure"
 }
 
-export class TaskSolutionSingleTestTester {
+export class ProblemSolutionSingleTestTester {
     response = "";
     time = 0;
     ram;

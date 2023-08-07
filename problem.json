@@ -1,0 +1,50 @@
+{
+  "title": "test",
+  "content": "Test problem",
+  "format": "tex || md || html || pdf",
+  "timeLimit": 100,
+  "ramLimit": 100,
+  "interactive": false,
+  "tests": [{"text": "", "files": {}}, {"text": "", "files": {}}],
+  "checker": {
+    "default": true,
+    "endls": false,
+    "spaces": false,
+    "trim": true,
+    "structure": [
+      [
+        {
+          "type": 1,
+          "var": "n"
+        },
+        {
+          "type": 1,
+          "var": "m"
+        },
+        1
+      ],
+      {
+        "count": "n",
+        "value": {
+          "count": "m",
+          "type": 1
+        }
+      },
+      {
+        "count": "n",
+        "value": [2, 0, 3]
+      }
+    ],
+    "info": null,
+    "tests": [
+      {
+        "correctAnswers": [""],
+        "info": null,
+        "vars": {
+          "n": 8,
+          "m": 6
+        }
+      }
+    ]
+  }
+}

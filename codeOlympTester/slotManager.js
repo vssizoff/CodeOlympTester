@@ -1,5 +1,5 @@
 import {Slot} from "./slot.js";
-import {defaultOptions, defaultTestsOptions} from "./taskSolutionTester.js";
+import {defaultOptions, defaultTestsOptions} from "./problemSolutionTester.js";
 
 export class SlotManager {
     slots = [];
@@ -27,15 +27,15 @@ export class SlotManager {
         return this.minSlot.runSomething(something);
     }
 
-    async runNormalTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
-        return this.minSlot.runNormalTaskSolutionTest(forAllTests, tests, options);
+    async runNormalProblemSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
+        return this.minSlot.runNormalProblemSolutionTester(forAllTests, tests, options);
     }
 
-    async runInteractiveTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
-        return this.minSlot.runInteractiveTaskSolutionTest(forAllTests, tests, options);
+    async runInteractiveProblemSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
+        return this.minSlot.runInteractiveProblemSolutionTester(forAllTests, tests, options);
     }
 
-    async runTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
-        return this.minSlot.runTaskSolutionTest(forAllTests, tests, options, interactive);
+    async runProblemSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
+        return this.minSlot.runProblemSolutionTester(forAllTests, tests, options, interactive);
     }
 }

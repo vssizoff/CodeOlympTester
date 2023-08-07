@@ -1,5 +1,5 @@
-import {defaultOptions, defaultTestsOptions} from "./taskSolutionTester.js";
-import {runInteractiveTaskSolutionTest, runNormalTaskSolutionTest, runTaskSolutionTest} from "./runers.js";
+import {defaultOptions, defaultTestsOptions} from "./problemSolutionTester.js";
+import {runInteractiveProblemSolutionTester, runNormalProblemSolutionTester, runProblemSolutionTester} from "./runers.js";
 
 export class Slot {
     dir;
@@ -20,15 +20,15 @@ export class Slot {
         });
     }
 
-    async runNormalTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
-        return this.runSomething(async () => runNormalTaskSolutionTest(forAllTests, tests, options));
+    async runNormalProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
+        return this.runSomething(async () => runNormalProblemSolutionTester(forAllTests, tests, options));
     }
 
-    async runInteractiveTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
-        return this.runSomething(async () => runInteractiveTaskSolutionTest(forAllTests, tests, options));
+    async runInteractiveProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
+        return this.runSomething(async () => runInteractiveProblemSolutionTester(forAllTests, tests, options));
     }
 
-    async runTaskSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
+    async runProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
         // return new Promise(resolve => {
         //     this.queue.push(async next => {
         //         resolve();
@@ -36,7 +36,7 @@ export class Slot {
         //     });
         //     if (this.queue.length === 1) this.nextTest();
         // });
-        return this.runSomething(async () => runTaskSolutionTest({dir: this.dir, ...forAllTests}, tests, options), interactive);
+        return this.runSomething(async () => runProblemSolutionTester({dir: this.dir, ...forAllTests}, tests, options), interactive);
     }
 
     nextTest() {

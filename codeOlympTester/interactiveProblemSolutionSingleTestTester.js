@@ -1,4 +1,4 @@
-import {defaultTestOptions, TaskSolutionSingleTestTester} from "./taskSolutionSingleTestTester.js";
+import {defaultTestOptions, ProblemSolutionSingleTestTester} from "./problemSolutionSingleTestTester.js";
 import path from "path";
 import {spawn} from "child_process";
 import fs from "fs";
@@ -11,7 +11,7 @@ export let defaultInteractorConfig = {
     tests: []
 }
 
-export class InteractiveTaskSolutionSingleTestTester extends TaskSolutionSingleTestTester {
+export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionSingleTestTester {
     process;
     interactorProcess;
     interactorCmd;

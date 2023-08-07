@@ -1,15 +1,15 @@
 import {spawn} from "child_process";
 import * as fs from "fs";
 import * as path from "path";
-import {defaultTestOptions, TaskSolutionSingleTestTester} from "./taskSolutionSingleTestTester.js";
+import {defaultTestOptions, ProblemSolutionSingleTestTester} from "./problemSolutionSingleTestTester.js";
 
-export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTester {
+export class NormalProblemSolutionSingleTestTester extends ProblemSolutionSingleTestTester {
     process;
     inputText = defaultTestOptions.inputText;
     checkerListeners = [];
 
 
-    constructor(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
+    constructor(cmd, checker = NormalProblemSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
         super();
         options = {...defaultTestOptions, ...options};
         this.checker = checker;
@@ -76,15 +76,3 @@ export class NormalTaskSolutionSingleTestTester extends TaskSolutionSingleTestTe
         super.killProcesses(this.process);
     }
 }
-
-// export async function runTest(cmd, checker = NormalTaskSolutionSingleTestTester.prototype.checker, options = defaultTestOptions) {
-    // options = {...defaultTestOptions, ...options};
-    // try {
-    //     return new TestResponse(cmd, checker, options);
-    // }
-    // catch (error) {}
-    // throw new Error("Error during running test");
-    // return new Promise(resolve => {
-    //     new NormalTaskSolutionSingleTestTester(cmd, checker, options).onAfterEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
-    // });
-// }

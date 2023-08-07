@@ -1,4 +1,4 @@
-import {defaultTestOptions} from "./taskSolutionSingleTestTester.js";
+import {defaultTestOptions} from "./problemSolutionSingleTestTester.js";
 
 export let defaultOptions = {
     cmd: "",
@@ -18,7 +18,7 @@ export let statusObject = {
     structure: "Invalid structure on test %test%"
 }
 
-export class TaskSolutionTester {
+export class ProblemSolutionTester {
     forAllTests = defaultOptions;
     tests = [];
     responses = [];

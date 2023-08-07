@@ -1,6 +1,6 @@
 {
   "title": "test",
-  "content": "Text task",
+  "content": "Test problem",
   "format": "tex || md || html || pdf",
   "timeLimit": 100,
   "ramLimit": 100,

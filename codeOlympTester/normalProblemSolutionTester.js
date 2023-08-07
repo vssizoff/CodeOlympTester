@@ -1,12 +1,12 @@
-import {NormalTaskSolutionSingleTestTester} from "./normalTaskSolutionSingleTestTester.js";
-import {TaskSolutionTester, defaultOptions, defaultTestsOptions} from "./taskSolutionTester.js";
+import {NormalProblemSolutionSingleTestTester} from "./normalProblemSolutionSingleTestTester.js";
+import {ProblemSolutionTester, defaultOptions, defaultTestsOptions} from "./problemSolutionTester.js";
 
 export let defaultNormalOptions = {
-    checker: NormalTaskSolutionSingleTestTester.prototype.checker,
+    checker: NormalProblemSolutionSingleTestTester.prototype.checker,
     ...defaultOptions
 }
 
-export class NormalTaskSolutionTester extends TaskSolutionTester {
+export class NormalProblemSolutionTester extends ProblemSolutionTester {
     forAllTests = defaultNormalOptions;
 
     constructor(forAllTests = defaultNormalOptions, tests = [defaultNormalOptions], options = defaultTestsOptions) {
@@ -18,7 +18,7 @@ export class NormalTaskSolutionTester extends TaskSolutionTester {
 
     runTest(onEnd, i = 0) {
         let checker = (...args) => (this.tests[i].checker ?? this.forAllTests.checker ?? defaultNormalOptions.checker)(...args, i)
-        new NormalTaskSolutionSingleTestTester(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultNormalOptions.cmd, checker,
+        new NormalProblemSolutionSingleTestTester(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultNormalOptions.cmd, checker,
             {
                 ...defaultNormalOptions, ...this.forAllTests, ...this.tests[i],
                 inputFiles: {...this.forAllTests.inputFiles, ...this.tests[i].inputFiles}

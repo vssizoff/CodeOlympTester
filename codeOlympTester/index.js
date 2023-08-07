@@ -14,13 +14,13 @@ JSON.safeStringify = (obj, indent = 2) => {
     return retVal;
 };
 
-export * from "./taskSolutionSingleTestTester.js";
-export * from "./normalTaskSolutionSingleTestTester.js";
-export * from "./interactiveTaskSolutionSingleTestTester.js";
+export * from "./problemSolutionSingleTestTester.js";
+export * from "./normalProblemSolutionSingleTestTester.js";
+export * from "./interactiveProblemSolutionSingleTestTester.js";
 
-export * from "./taskSolutionTester.js";
-export * from "./normalTaskSolutionTester.js";
-export * from "./interactiveTaskSolutionTester.js";
+export * from "./problemSolutionTester.js";
+export * from "./normalProblemSolutionTester.js";
+export * from "./interactiveProblemSolutionTester.js";
 
 export * from "./slot.js";
 export * from "./slotManager.js";

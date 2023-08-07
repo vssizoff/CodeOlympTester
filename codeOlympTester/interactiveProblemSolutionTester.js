@@ -1,12 +1,12 @@
-import {defaultOptions, defaultTestsOptions, TaskSolutionTester} from "./taskSolutionTester.js";
-import {defaultInteractorConfig, InteractiveTaskSolutionSingleTestTester} from "./interactiveTaskSolutionSingleTestTester.js";
+import {defaultOptions, defaultTestsOptions, ProblemSolutionTester} from "./problemSolutionTester.js";
+import {defaultInteractorConfig, InteractiveProblemSolutionSingleTestTester} from "./interactiveProblemSolutionSingleTestTester.js";
 
 export let defaultInteractiveOptions = {
     interactorConfig: defaultInteractorConfig,
     ...defaultOptions
 }
 
-export class InteractiveTaskSolutionTester extends TaskSolutionTester {
+export class InteractiveProblemSolutionTester extends ProblemSolutionTester {
     forAllTests = defaultInteractiveOptions;
 
     constructor(forAllTests = defaultInteractiveOptions, tests = [defaultInteractiveOptions], options = defaultTestsOptions) {
@@ -18,7 +18,7 @@ export class InteractiveTaskSolutionTester extends TaskSolutionTester {
 
     runTest(onEnd, i = 0) {
         let interactorConfig = {...defaultInteractorConfig, ...this.forAllTests.interactorConfig, ...this.tests[i].interactorConfig};
-        new InteractiveTaskSolutionSingleTestTester(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultInteractiveOptions.cmd, interactorConfig,
+        new InteractiveProblemSolutionSingleTestTester(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultInteractiveOptions.cmd, interactorConfig,
             {
                 ...defaultInteractiveOptions, ...this.forAllTests, ...this.tests[i],
                 inputFiles: {...this.forAllTests.inputFiles, ...this.tests[i].inputFiles}
