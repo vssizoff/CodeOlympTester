@@ -16,15 +16,15 @@
     }
   ],
   "checker": {
+    "info": null,
+    "tests": [
+      null
+    ],
     "default": false,
     "useCorrectAnswers": false,
     "cmd": "node checker.js",
     "files": {
       "checker.js": "path"
-    },
-    "info": null,
-    "tests": [
-      null
-    ]
+    }
   }
 }

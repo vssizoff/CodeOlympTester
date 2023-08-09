@@ -16,13 +16,6 @@
     }
   ],
   "checker": {
-    "default": false,
-    "useCorrectAnswers": true,
-    "cmd": "checker.exe",
-    "files": {
-      "checker.exe": "./checker.exe",
-      "in.txt": "./in.txt"
-    },
     "info": null,
     "tests": [
       {
@@ -33,6 +26,13 @@
         "correctAnswers": [""],
         "info": null
       }
-    ]
+    ],
+    "default": false,
+    "useCorrectAnswers": true,
+    "cmd": "checker.exe",
+    "files": {
+      "checker.exe": "./checker.exe",
+      "in.txt": "./in.txt"
+    }
   }
 }

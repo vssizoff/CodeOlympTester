@@ -7,6 +7,17 @@
   "interactive": false,
   "tests": [{"text": "", "files": {}}, {"text": "", "files": {}}],
   "checker": {
+    "info": null,
+    "tests": [
+      {
+        "correctAnswers": [""],
+        "info": null,
+        "vars": {
+          "n": 8,
+          "m": 6
+        }
+      }
+    ],
     "default": true,
     "endls": false,
     "spaces": false,
@@ -33,17 +44,6 @@
       {
         "count": "n",
         "value": [2, 0, 3]
-      }
-    ],
-    "info": null,
-    "tests": [
-      {
-        "correctAnswers": [""],
-        "info": null,
-        "vars": {
-          "n": 8,
-          "m": 6
-        }
       }
     ],
     "stdout": false,

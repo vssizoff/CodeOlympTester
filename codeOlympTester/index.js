@@ -11,3 +11,4 @@ export * from "./slotManager.js";
 export * from "./types.js";
 export * from "./cherckers/index.js";
 export * from "./runers.js";
+export * from "./fromJSON.js";

@@ -1,5 +1,7 @@
 import {Slot} from "./slot.js";
 import {defaultOptions, defaultTestsOptions} from "./problemSolutionTester.js";
+import {defaultTestOptions} from "./problemSolutionSingleTestTester.js";
+import {defaultProblem, defaultSolution, defaultSysConfig} from "./fromJSON.js";
 
 export class SlotManager {
     slots = [];
@@ -37,5 +39,10 @@ export class SlotManager {
 
     async runProblemSolutionTest(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
         return this.minSlot.runProblemSolutionTester(forAllTests, tests, options, interactive);
+    }
+
+    async runFromJSON(problem = defaultProblem, solution = defaultSolution,
+                      sysConfig = defaultSysConfig, testOptions = defaultTestOptions) {
+        return this.minSlot.runFromJSON(problem, solution, sysConfig, testOptions);
     }
 }

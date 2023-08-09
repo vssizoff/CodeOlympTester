@@ -52,9 +52,9 @@ export default function defaultChecker(checkerConfig) {
         });
 
         for (let a of ans) {
-            if (!a) return 1;
+            if (a) return 0;
         }
 
-        return 0;
+        return 1;
     }
 }

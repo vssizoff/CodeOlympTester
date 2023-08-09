@@ -1,5 +1,7 @@
 import {defaultOptions, defaultTestsOptions} from "./problemSolutionTester.js";
 import {runInteractiveProblemSolutionTester, runNormalProblemSolutionTester, runProblemSolutionTester} from "./runers.js";
+import {defaultProblem, defaultSolution, defaultSysConfig, runFromJSON} from "./fromJSON.js";
+import {defaultTestOptions} from "./problemSolutionSingleTestTester.js";
 
 export class Slot {
     dir;
@@ -29,14 +31,14 @@ export class Slot {
     }
 
     async runProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
-        // return new Promise(resolve => {
-        //     this.queue.push(async next => {
-        //         resolve();
-        //         next();
-        //     });
-        //     if (this.queue.length === 1) this.nextTest();
-        // });
         return this.runSomething(async () => runProblemSolutionTester({dir: this.dir, ...forAllTests}, tests, options), interactive);
+    }
+
+
+
+    async runFromJSON(problem = defaultProblem, solution = defaultSolution,
+                      sysConfig = defaultSysConfig, testOptions = defaultTestOptions) {
+        return this.runSomething(async () => runFromJSON(problem, solution, sysConfig, testOptions));
     }
 
     nextTest() {
