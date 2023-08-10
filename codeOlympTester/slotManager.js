@@ -1,6 +1,5 @@
 import {Slot} from "./slot.js";
 import {defaultOptions, defaultTestsOptions} from "./problemSolutionTester.js";
-import {defaultTestOptions} from "./problemSolutionSingleTestTester.js";
 import {defaultProblem, defaultSolution, defaultSysConfig} from "./fromJSON.js";
 
 export class SlotManager {
@@ -42,7 +41,7 @@ export class SlotManager {
     }
 
     async runFromJSON(problem = defaultProblem, solution = defaultSolution,
-                      sysConfig = defaultSysConfig, testOptions = defaultTestOptions) {
-        return this.minSlot.runFromJSON(problem, solution, sysConfig, testOptions);
+                      sysConfig = defaultSysConfig) {
+        return this.minSlot.runFromJSON(problem, solution, sysConfig);
     }
 }

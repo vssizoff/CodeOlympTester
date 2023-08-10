@@ -3,6 +3,7 @@ import path from "path";
 import {spawn} from "child_process";
 import fs from "fs";
 import pidUsage from "pidusage";
+import {BufferToString} from "auto-buffer-encoding";
 
 export let defaultInteractorConfig = {
     cmd: "node",
@@ -50,13 +51,18 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
             cwd: this.dir,
             shell: true
         });
-        this.prepareLimits(this.process);
-        this.prepareInteractorLimits();
+        // this.prepareLimits(this.process);
+        // this.prepareInteractorLimits();
         let verdict = -1, ended = [undefined, undefined], end = (code, interactor) => {
             ended[interactor ? 1 : 0] = code;
             if (ended[0] === undefined || ended[1] === undefined) return;
             if (ended[0] === 0 && ended[1] === 0) {
                 fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename));
+                this.outputFiles = Object.fromEntries(Object.entries(this.outputFiles).map(([key, value]) => {
+                    try {return [key, BufferToString(value).replaceAll("\r\n", '\n').replaceAll('\r', '\n')];}
+                    catch (_) {return [key, value];}
+                }));
+                this.verdict = verdict;
             }
             while (true) {
                 try {

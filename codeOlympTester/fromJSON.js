@@ -1,7 +1,7 @@
 import getFile from "s-get-file";
 import {customChecker, defaultChecker} from "./cherckers/index.js";
-import {defaultTestOptions} from "./problemSolutionSingleTestTester.js";
 import {runProblemSolutionTester} from "./runers.js";
+import path from "path";
 
 export let defaultProblem = {
     title: "default",
@@ -61,7 +61,7 @@ export let defaultProblem = {
 }
 
 export function fromJSONSync(problem = defaultProblem, solution = defaultSolution,
-                             sysConfig = defaultSysConfig, testOptions = defaultTestOptions) {
+                             sysConfig = defaultSysConfig) {
     problem = {...defaultProblem, ...problem};
     solution = {...defaultSolution, ...solution};
     sysConfig = {...defaultSysConfig, ...sysConfig};
@@ -89,43 +89,51 @@ export function fromJSONSync(problem = defaultProblem, solution = defaultSolutio
         arr.push({
             maxTime: problem.tests[i].timeLimit ?? problem.timeLimit,
             maxRam: problem.tests[i].ramLimit ?? problem.ramLimit,
-            inputText: problem.tests[i].text,
+            inputText: !problem.interactive ? problem.tests[i].text : undefined,
             inputFiles: problem.tests[i].files
         });
     }
     return [{
-        ...sysConfig,
         cmd: solution.cmd,
         checker: !problem.interactive ? (problem.checker.default ? defaultChecker(problem.checker) : customChecker(problem.checker, sysConfig.dir)) : undefined,
-        interactor: problem.interactive ? problem.interactor : undefined,
-        inputFiles: solution.files
-    }, arr, testOptions, problem.interactive];
+        interactorConfig: problem.interactive ? problem.interactor : undefined,
+        inputFiles: solution.files,
+        hardTime: sysConfig.hardTime,
+        hardRam: sysConfig.hardRam,
+        dir: sysConfig.dir
+    }, arr, {
+        runFull: sysConfig.runFull
+    }, problem.interactive];
 }
 
 export async function fromJSON(problem = defaultProblem, solution = defaultSolution,
-                               sysConfig = defaultSysConfig, testOptions = defaultTestOptions) {
+                               sysConfig = defaultSysConfig) {
     for (let i = 0; i < problem.tests.length; i++) {
         for (let filesKey in problem.tests[i].files) {
+            if (typeof problem.tests[i].files[filesKey] !== "string") continue;
             problem.tests[i].files[filesKey] = await getFile(problem.tests[i].files[filesKey]);
         }
     }
     if ("checker" in problem && !problem.checker.default) {
         for (let filesKey in problem.checker.files) {
+            if (typeof problem.checker.files[filesKey] !== "string") continue;
             problem.checker.files[filesKey] = await getFile(problem.checker.files[filesKey]);
         }
     }
     if ("interactor" in problem) {
         for (let filesKey in problem.interactor.files) {
-            problem.interactor.files[filesKey] = await getFile(problem.interactor.files[filesKey]);
+            if (typeof problem.interactor.files[filesKey] !== "string") continue;
+            problem.interactor.files[filesKey] = await getFile(path.resolve(problem.interactor.files[filesKey]));
         }
     }
     for (let filesKey in solution.files) {
+        if (typeof solution.files[filesKey] !== "string") continue;
         solution.files[filesKey] = await getFile(solution.files[filesKey]);
     }
-    return fromJSONSync(problem, solution, sysConfig, testOptions);
+    return fromJSONSync(problem, solution, sysConfig);
 }
 
 export async function runFromJSON(problem = defaultProblem, solution = defaultSolution,
-                                  sysConfig = defaultSysConfig, testOptions = defaultTestOptions) {
-    return runProblemSolutionTester(...(await fromJSON(problem, solution, sysConfig, testOptions)));
+                                  sysConfig = defaultSysConfig) {
+    return runProblemSolutionTester(...(await fromJSON(problem, solution, sysConfig)));
 }

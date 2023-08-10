@@ -4,7 +4,6 @@
   "format": "tex || md || html || pdf",
   "timeLimit": 100,
   "ramLimit": 100,
-  "interactive": false,
   "tests": [
     {
       "text": "",
@@ -15,6 +14,7 @@
       "files": {}
     }
   ],
+  "interactive": false,
   "checker": {
     "info": null,
     "tests": [

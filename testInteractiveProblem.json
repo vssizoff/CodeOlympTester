@@ -1,0 +1,20 @@
+{
+    "title": "test",
+    "content": "Test problem",
+    "format": "tex || md || html || pdf",
+    "timeLimit": 100,
+    "ramLimit": 100,
+    "tests": [{}, {}],
+    "interactive": true,
+    "interactor": {
+        "cmd": "node interactor.js",
+        "files": {
+            "interactor.js": "./interactor.js"
+        },
+        "info": null,
+        "tests": [
+            null,
+            null
+        ]
+    }
+}

@@ -2,6 +2,7 @@ import {spawn} from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import {defaultTestOptions, ProblemSolutionSingleTestTester} from "./problemSolutionSingleTestTester.js";
+import {BufferToString} from "auto-buffer-encoding";
 
 export class NormalProblemSolutionSingleTestTester extends ProblemSolutionSingleTestTester {
     process;
@@ -38,6 +39,10 @@ export class NormalProblemSolutionSingleTestTester extends ProblemSolutionSingle
             this.code = code
             if (this.code === 0 || this.code === undefined || this.code === null) {
                 fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename));
+                this.outputFiles = Object.fromEntries(Object.entries(this.outputFiles).map(([key, value]) => {
+                    try {return [key, BufferToString(value).replaceAll("\r\n", '\n').replaceAll('\r', '\n')];}
+                    catch (_) {return [key, value];}
+                }));
                 this.verdict = this.checker.bind(this)(this.response, this.outputFiles, this.inputText, this.inputFiles, this);
                 if (this.verdict instanceof Promise) this.verdict = await this.verdict;
             }
