@@ -28,10 +28,7 @@ runFromJSON(JSON.parse(fs.readFileSync("./testInteractiveProblem.json", {encodin
     runFull: true
 }).then(response => {
     // console.log(response);
-    console.log(response.status, response.responses.map(elem => elem.status), response.responses.map(({process, inputFiles, outputFiles, interactorFiles, interactorProcess, ...a}) => ({
-        outputFiles,
-        ...a
-    })));
+    console.log(response.responses.map(res => res.mainData), response.responses.map(elem => elem.status), response.status);
 });
 
 // fromJSON(JSON.parse(fs.readFileSync("./testInteractiveProblem.json", {encoding: "utf8"})), {

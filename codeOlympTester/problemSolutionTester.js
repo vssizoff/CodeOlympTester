@@ -47,7 +47,7 @@ export class ProblemSolutionTester {
         if (!this.done) return undefined;
         let flag = true;
         this.responses.forEach(elem => {
-            if (elem.checkerResponse !== 0) flag = false;
+            if (elem.verdict !== 0) flag = false;
         });
         return flag;
     }
@@ -60,9 +60,9 @@ export class ProblemSolutionTester {
             if (ans.length !== 0) return;
             if (elem.timeLimitExpended) ans = obj.time.replace("%test%", index.toString());
             if (elem.ramLimitExpended) ans = obj.ram.replace("%test%", index.toString());
-            if (elem.ended && elem.checkerResponse === 1) ans = obj.failed.replace("%test%", index.toString());
-            if (elem.ended && elem.checkerResponse === 2) ans = obj.structure.replace("%test%", index.toString());
-            if (elem.ended && elem.checkerResponse !== 0) ans = obj.failed.replace("%test%", index.toString());
+            if (elem.ended && elem.verdict === 1) ans = obj.failed.replace("%test%", index.toString());
+            if (elem.ended && elem.verdict === 2) ans = obj.structure.replace("%test%", index.toString());
+            if (elem.ended && elem.verdict !== 0) ans = obj.failed.replace("%test%", index.toString());
         });
         if (ans.length !== 0) return ans;
         return obj.testing.replace("%test%", (this.responses.length - 1).toString());

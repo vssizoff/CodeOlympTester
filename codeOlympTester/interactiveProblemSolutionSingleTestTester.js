@@ -51,11 +51,12 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
             cwd: this.dir,
             shell: true
         });
-        // this.prepareLimits(this.process);
-        // this.prepareInteractorLimits();
+        this.prepareLimits(this.process);
+        this.prepareInteractorLimits();
         let verdict = -1, ended = [undefined, undefined], end = (code, interactor) => {
             ended[interactor ? 1 : 0] = code;
             if (ended[0] === undefined || ended[1] === undefined) return;
+            this.ended = true;
             if (ended[0] === 0 && ended[1] === 0) {
                 fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename));
                 this.outputFiles = Object.fromEntries(Object.entries(this.outputFiles).map(([key, value]) => {
@@ -127,5 +128,14 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
 
     killProcesses() {
         super.killProcesses(this.process, this.interactorProcess);
+    }
+
+    get mainData() {
+        return {
+            ...super.mainData,
+            interactorCmd: this.interactorCmd,
+            interactorInfo: this.interactorInfo,
+            verdictCommand: this.verdictCommand
+        }
     }
 }

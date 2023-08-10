@@ -80,4 +80,11 @@ export class NormalProblemSolutionSingleTestTester extends ProblemSolutionSingle
     killProcess() {
         super.killProcesses(this.process);
     }
+
+    get mainData() {
+        return {
+            ...super.mainData,
+            inputText: this.inputText
+        }
+    }
 }

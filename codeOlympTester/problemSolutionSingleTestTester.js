@@ -127,4 +127,25 @@ export class ProblemSolutionSingleTestTester {
     runEndListeners(bind = this, ...args) {
         this.endListeners.forEach(callback => callback.bind(this)(this.verdict, this));
     }
+
+    get mainData() {
+        return {
+            response: this.response,
+            time: this.time,
+            ram: this.ram,
+            timeLimitExpended: this.timeLimitExpended,
+            ramLimitExpended: this.ramLimitExpended,
+            ended: this.ended,
+            verdict: this.verdict,
+            code: this.code,
+            status: this.status,
+            maxTime: this.maxTime,
+            maxRam: this.maxRam,
+            hardTime: this.hardTime,
+            hardRam: this.hardRam,
+            runFull: this.runFull,
+            dir: this.dir,
+            outputFiles: this.outputFiles
+        }
+    }
 }
