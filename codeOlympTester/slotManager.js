@@ -13,7 +13,7 @@ export class SlotManager {
 
     get minSlotIndex() {
         let min = 0, minIndex = -1;
-        this.slots.forEach((value, index) => {
+        this.slots.map(elem => elem.queue.length + (elem.busy ? 1 : 0)).forEach((value, index) => {
             if (minIndex === -1 || min > value) {
                 min = value;
                 minIndex = index;

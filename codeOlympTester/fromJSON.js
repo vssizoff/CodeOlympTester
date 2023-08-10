@@ -123,7 +123,7 @@ export async function fromJSON(problem = defaultProblem, solution = defaultSolut
     if ("interactor" in problem) {
         for (let filesKey in problem.interactor.files) {
             if (typeof problem.interactor.files[filesKey] !== "string") continue;
-            problem.interactor.files[filesKey] = await getFile(path.resolve(problem.interactor.files[filesKey]));
+            problem.interactor.files[filesKey] = await getFile(problem.interactor.files[filesKey]);
         }
     }
     for (let filesKey in solution.files) {

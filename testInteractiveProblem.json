@@ -9,7 +9,7 @@
     "interactor": {
         "cmd": "node interactor.js",
         "files": {
-            "interactor.js": "./interactor.js"
+            "interactor.js": "interactor.js"
         },
         "info": null,
         "tests": [
