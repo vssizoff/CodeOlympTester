@@ -57,6 +57,8 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
             ended[interactor ? 1 : 0] = code;
             if (ended[0] === undefined || ended[1] === undefined) return;
             this.ended = true;
+            this.code = ended[0];
+            this.stopTimeouts();
             if (ended[0] === 0 && ended[1] === 0) {
                 fs.readdirSync(this.dir).forEach(filename => this.outputFiles[filename] = fs.readFileSync(this.dir + '/' + filename));
                 this.outputFiles = Object.fromEntries(Object.entries(this.outputFiles).map(([key, value]) => {

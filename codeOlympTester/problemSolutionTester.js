@@ -15,7 +15,8 @@ export let statusObject = {
     success: "Success",
     failed: "Failed test %test%",
     testing: "Testing on test %test%",
-    structure: "Invalid structure on test %test%"
+    structure: "Invalid structure on test %test%",
+    error: "Error on test %test%"
 }
 
 export class ProblemSolutionTester {
@@ -58,11 +59,12 @@ export class ProblemSolutionTester {
         let ans = "";
         this.responses.forEach((elem, index) => {
             if (ans.length !== 0) return;
-            if (elem.timeLimitExpended) ans = obj.time.replace("%test%", index.toString());
-            if (elem.ramLimitExpended) ans = obj.ram.replace("%test%", index.toString());
-            if (elem.ended && elem.verdict === 1) ans = obj.failed.replace("%test%", index.toString());
-            if (elem.ended && elem.verdict === 2) ans = obj.structure.replace("%test%", index.toString());
-            if (elem.ended && elem.verdict !== 0) ans = obj.failed.replace("%test%", index.toString());
+            if (elem.timeLimitExpended) ans = obj.time.replaceAll("%test%", index.toString());
+            if (elem.ramLimitExpended) ans = obj.ram.replaceAll("%test%", index.toString());
+            // if (!elem.code) ans = obj.error.replaceAll("%test%", index.toString());
+            if (elem.ended && elem.verdict === 1) ans = obj.failed.replaceAll("%test%", index.toString());
+            if (elem.ended && elem.verdict === 2) ans = obj.structure.replaceAll("%test%", index.toString());
+            if (elem.ended && elem.verdict !== 0) ans = obj.failed.replaceAll("%test%", index.toString());
         });
         if (ans.length !== 0) return ans;
         return obj.testing.replace("%test%", (this.responses.length - 1).toString());
@@ -80,4 +82,6 @@ export class ProblemSolutionTester {
     runEndListeners() {
         this.endListeners.forEach(callback => callback.bind(this)(this));
     }
+
+    get responsesMainData() {return this.responses.map(response => response.mainData)}
 }

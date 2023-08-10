@@ -18,7 +18,8 @@ export let testStatusObject = {
     success: "Success",
     failed: "Failed",
     testing: "Testing",
-    structure: "Invalid structure"
+    structure: "Invalid structure",
+    error: "Error"
 }
 
 export class ProblemSolutionSingleTestTester {
@@ -64,11 +65,15 @@ export class ProblemSolutionSingleTestTester {
     prepareTimeLimit(process) {
         let stopTime = this.runFull ? this.hardTime : this.maxTime;
         this.timeTimeoutId = setTimeout(() => {
-            this.killProcesses(process);
-            this.timeLimitExpended = true;
+            // this.killProcesses(process);
+            // this.timeLimitExpended = true;
         }, stopTime);
         this.timeCounterId = setInterval(() => {
             this.time++;
+            if (this.time > stopTime) {
+                this.killProcesses(process);
+                this.timeLimitExpended = true;
+            }
         }, 1);
     }
 
@@ -109,6 +114,7 @@ export class ProblemSolutionSingleTestTester {
         obj = {...testStatusObject, ...obj};
         if (this.timeLimitExpended) return obj.time;
         if (this.ramLimitExpended) return obj.ram;
+        // if (!this.code) return obj.error;
         if (this.ended && this.verdict === 0) return obj.success;
         if (this.ended && this.verdict === 2) return obj.structure;
         if (this.ended) return obj.failed;
