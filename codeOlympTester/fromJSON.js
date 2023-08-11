@@ -135,7 +135,7 @@ export async function fromJSON(problem = defaultProblem, solution = defaultSolut
 
 export async function runFromJSONWithoutFiles(problem = defaultProblem, solution = defaultSolution,
                                   sysConfig = defaultSysConfig) {
-    return runProblemSolutionTester(...(await fromJSONWithoutFiles(problem, solution, sysConfig)));
+    return runProblemSolutionTester(...fromJSONWithoutFiles(problem, solution, sysConfig));
 }
 
 export async function runFromJSON(problem = defaultProblem, solution = defaultSolution,
