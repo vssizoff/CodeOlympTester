@@ -45,3 +45,9 @@ export class SlotManager {
         return this.minSlot.runFromJSON(problem, solution, sysConfig);
     }
 }
+
+    async runFromJSON(problem = defaultProblem, solution = defaultSolution,
+                      sysConfig = defaultSysConfig) {
+        return this.minSlot.runFromJSON(problem, solution, sysConfig);
+    }
+}
