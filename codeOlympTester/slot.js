@@ -4,7 +4,7 @@ import {
     runNormalProblemSolutionTester,
     runProblemSolutionTester
 } from "./runers.js";
-import {defaultProblem, defaultSolution, defaultSysConfig, runFromJSON} from "./fromJSON.js";
+import {defaultProblem, defaultSolution, defaultSysConfig, runFromJSON, runFromJSONWithoutFiles} from "./fromJSON.js";
 
 export class Slot {
     dir;
@@ -39,6 +39,15 @@ export class Slot {
     async runProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
         return this.runSomething(async () => runProblemSolutionTester({dir: this.dir, ...forAllTests}, tests, options), interactive);
     }
+
+    async runFromJSONWithoutFiles(problem = defaultProblem, solution = defaultSolution,
+                      sysConfig = defaultSysConfig) {
+        return this.runSomething(async () => {
+            let data = await runFromJSONWithoutFiles(problem, solution, sysConfig);
+            data[0] = {dir: this.dir, ...data[0]};
+            return data;
+        });
+    }    
 
     async runFromJSON(problem = defaultProblem, solution = defaultSolution,
                       sysConfig = defaultSysConfig) {
