@@ -60,7 +60,7 @@ export let defaultProblem = {
     runFull: false
 }
 
-export function fromJSONSync(problem = defaultProblem, solution = defaultSolution,
+export function fromJSONWithoutFiles(problem = defaultProblem, solution = defaultSolution,
                              sysConfig = defaultSysConfig) {
     problem = {...defaultProblem, ...problem};
     solution = {...defaultSolution, ...solution};
@@ -130,7 +130,12 @@ export async function fromJSON(problem = defaultProblem, solution = defaultSolut
         if (typeof solution.files[filesKey] !== "string") continue;
         solution.files[filesKey] = await getFile(solution.files[filesKey]);
     }
-    return fromJSONSync(problem, solution, sysConfig);
+    return fromJSONWithoutFiles(problem, solution, sysConfig);
+}
+
+export async function runFromJSONWithoutFiles(problem = defaultProblem, solution = defaultSolution,
+                                  sysConfig = defaultSysConfig) {
+    return runProblemSolutionTester(...(await fromJSONWithoutFiles(problem, solution, sysConfig)));
 }
 
 export async function runFromJSON(problem = defaultProblem, solution = defaultSolution,
