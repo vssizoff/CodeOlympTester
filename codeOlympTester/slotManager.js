@@ -40,11 +40,10 @@ export class SlotManager {
         return this.minSlot.runProblemSolutionTester(forAllTests, tests, options, interactive);
     }
 
-    async runFromJSON(problem = defaultProblem, solution = defaultSolution,
+    async runFromJSONWithoutFiles(problem = defaultProblem, solution = defaultSolution,
                       sysConfig = defaultSysConfig) {
-        return this.minSlot.runFromJSON(problem, solution, sysConfig);
+        return this.minSlot.runFromJSONWithoutFiles(problem, solution, sysConfig);
     }
-}
 
     async runFromJSON(problem = defaultProblem, solution = defaultSolution,
                       sysConfig = defaultSysConfig) {
