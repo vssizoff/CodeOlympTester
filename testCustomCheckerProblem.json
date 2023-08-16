@@ -16,23 +16,6 @@
   ],
   "interactive": false,
   "checker": {
-    "default": true,
-    "endls": false,
-    "spaces": false,
-    "trim": true,
-    "structure": [
-      {
-        "var": "n",
-        "type": 1
-      },
-      {
-        "count": "n",
-        "value": {
-          "count": "n",
-          "type": 1
-        }
-      }
-    ],
     "info": null,
     "tests": [
       {
@@ -50,6 +33,12 @@
         "vars": {}
       }
     ],
-    "stdout": true
+    "default": false,
+    "useCorrectAnswers": true,
+    "cmd": "checker.exe",
+    "files": {
+      "checker.exe": "./checker.exe",
+      "in.txt": "./in.txt"
+    }
   }
 }

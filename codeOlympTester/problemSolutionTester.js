@@ -60,11 +60,11 @@ export class ProblemSolutionTester {
         this.responses.forEach((elem, index) => {
             if (ans.length !== 0) return;
             if (elem.timeLimitExpended) ans = obj.time.replaceAll("%test%", index.toString());
-            if (elem.ramLimitExpended) ans = obj.ram.replaceAll("%test%", index.toString());
-            // if (!elem.code) ans = obj.error.replaceAll("%test%", index.toString());
-            if (elem.ended && elem.verdict === 1) ans = obj.failed.replaceAll("%test%", index.toString());
-            if (elem.ended && elem.verdict === 2) ans = obj.structure.replaceAll("%test%", index.toString());
-            if (elem.ended && elem.verdict !== 0) ans = obj.failed.replaceAll("%test%", index.toString());
+            else if (elem.ramLimitExpended) ans = obj.ram.replaceAll("%test%", index.toString());
+            // else if (!elem.code) ans = obj.error.replaceAll("%test%", index.toString());
+            else if (elem.ended && elem.verdict === 1) ans = obj.failed.replaceAll("%test%", index.toString());
+            else if (elem.ended && elem.verdict === 2) ans = obj.structure.replaceAll("%test%", index.toString());
+            else if (elem.ended && elem.verdict !== 0) ans = obj.failed.replaceAll("%test%", index.toString());
         });
         if (ans.length !== 0) return ans;
         return obj.testing.replace("%test%", (this.responses.length - 1).toString());

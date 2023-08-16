@@ -69,63 +69,24 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
                 }));
                 this.verdict = verdict;
             }
+            // console.log(ended, ended[0] === 0 && ended[1] === 0)
             while (true) {
                 try {
                     fs.rmSync(this.dir, {recursive: true});
                 }
                 catch (error) {
-                    break;
+                    if (error.code === "ENOENT") break;
+                    // console.log(error);
                 }
             }
             this.runEndListeners(this, this.verdict, this);
         };
         this.interactorProcess.on("exit", code => end(code, true));
         this.process.on("exit", code => end(code, false));
-        this.interactorProcess.stdout.on("data", data => {
-            data = data.toString();
-            // if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
-            if (this.commandPrefix === undefined) {
-                if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
-                this.commandPrefix = data;
-            }
-            else if (!data.startsWith(this.commandPrefix)) {
-                this.process.stdin.write(data);
-                return;
-            }
-            if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
-            data = data.substring(this.commandPrefix.length);
-            if (data.startsWith("config.cmd")) {
-                this.interactorProcess.stdin.write(`${this.interactorCmd}\n`);
-            }
-            else if (data.startsWith("config.files.")) {
-                this.interactorProcess.stdin.write(this.interactorFiles[data.substring("config.files.".length)] + '\n');
-            }
-            else if (data.startsWith("config.files")) {
-                this.interactorProcess.stdin.write(JSON.stringify(this.interactorFiles) + '\n');
-            }
-            else if (data.startsWith("config.filesKeys")) {
-                this.interactorProcess.stdin.write(Object.keys(this.interactorFiles).join(data.substring("config.filesKeys".length)) + '\n');
-            }
-            else if (data.startsWith("config.info")) {
-                this.interactorProcess.stdin.write(`${this.interactorInfo}\n`);
-            }
-            else if (data.startsWith("config.tests.")) {
-                this.interactorProcess.stdin.write(this.interactorTests[data.substring("config.tests.".length)] + '\n');
-            }
-            else if (data.startsWith("config.tests")) {
-                this.interactorProcess.stdin.write(JSON.stringify(this.interactorTests) + '\n');
-            }
-            else if (data.startsWith("config.tests.length")) {
-                this.interactorProcess.stdin.write(`${this.interactorTests.length}\n`);
-            }
-            else if (data.startsWith("testNumber")) {
-                this.interactorProcess.stdin.write(`${this.testNumber}\n`);
-            }
-            else if (data.startsWith("-1") || data.startsWith("0") || data.startsWith("1") || data.startsWith("2")) {
-                verdict = data[0] === '-' ? -1 : Number(data[0]);
-            }
-            // verdict = Number(data.substring(this.commandPrefix.length).trim());
-        });
+        this.interactorProcess.stdout.on("data", data => data.toString().split('\n').forEach((elem, index, array) => {
+            if (elem.trim() === "" && index === array.length - 1) return;
+            this.interactorInputHandler(elem, value => verdict = value);
+        }));
         this.process.stdout.on("data", data => this.interactorProcess.stdin.write(data));
     }
 
@@ -145,6 +106,50 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
             }
             catch (error) {}
         }, 100);
+    }
+
+    interactorInputHandler(data, setVerdict) {
+        if (this.commandPrefix === undefined) {
+            if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
+            this.commandPrefix = data;
+        }
+        else if (!data.startsWith(this.commandPrefix)) {
+            this.process.stdin.write(data);
+            return;
+        }
+        if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
+        data = data.substring(this.commandPrefix.length);
+        if (data.startsWith("config.cmd")) {
+            this.interactorProcess.stdin.write(`${this.interactorCmd}\n`);
+        }
+        else if (data.startsWith("config.files.")) {
+            this.interactorProcess.stdin.write(this.interactorFiles[data.substring("config.files.".length)] + '\n');
+        }
+        else if (data.startsWith("config.files")) {
+            this.interactorProcess.stdin.write(JSON.stringify(this.interactorFiles) + '\n');
+        }
+        else if (data.startsWith("config.filesKeys")) {
+            this.interactorProcess.stdin.write(Object.keys(this.interactorFiles).join(data.substring("config.filesKeys".length)) + '\n');
+        }
+        else if (data.startsWith("config.info")) {
+            this.interactorProcess.stdin.write(`${this.interactorInfo}\n`);
+        }
+        else if (data.startsWith("config.tests.")) {
+            this.interactorProcess.stdin.write(this.interactorTests[data.substring("config.tests.".length)] + '\n');
+        }
+        else if (data.startsWith("config.tests")) {
+            this.interactorProcess.stdin.write(JSON.stringify(this.interactorTests) + '\n');
+        }
+        else if (data.startsWith("config.tests.length")) {
+            this.interactorProcess.stdin.write(`${this.interactorTests.length}\n`);
+        }
+        else if (data.startsWith("testNumber")) {
+            this.interactorProcess.stdin.write(`${this.testNumber}\n`);
+        }
+        else if (data.startsWith("-1") || data.startsWith("0") || data.startsWith("1") || data.startsWith("2")) {
+            setVerdict(data[0] === '-' ? -1 : Number(data[0]));
+        }
+        // verdict = Number(data.substring(this.commandPrefix.length).trim());
     }
 
     prepareFiles() {

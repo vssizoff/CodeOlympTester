@@ -2,7 +2,7 @@
     "title": "test",
     "content": "Test problem",
     "format": "tex || md || html || pdf",
-    "timeLimit": 100,
+    "timeLimit": 200,
     "ramLimit": 100,
     "testsCount": 2,
     "interactive": true,

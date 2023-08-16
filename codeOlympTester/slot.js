@@ -1,9 +1,5 @@
 import {defaultOptions, defaultTestsOptions} from "./problemSolutionTester.js";
-import {
-    runInteractiveProblemSolutionTester,
-    runNormalProblemSolutionTester,
-    runProblemSolutionTester
-} from "./runers.js";
+import {runInteractiveProblemSolutionTester, runNormalProblemSolutionTester, runProblemSolutionTester} from "./runers.js";
 import {defaultProblem, defaultSolution, defaultSysConfig, runFromJSON, runFromJSONWithoutFiles} from "./fromJSON.js";
 
 export class Slot {
@@ -29,33 +25,25 @@ export class Slot {
     }
 
     async runNormalProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
-        return this.runSomething(async () => runNormalProblemSolutionTester({dir: this.dir, ...forAllTests}, tests, options));
+        return this.runSomething(async () => runNormalProblemSolutionTester({...forAllTests, dir: this.dir}, tests, options));
     }
 
     async runInteractiveProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {
-        return this.runSomething(async () => runInteractiveProblemSolutionTester({dir: this.dir, ...forAllTests}, tests, options));
+        return this.runSomething(async () => runInteractiveProblemSolutionTester({...forAllTests, dir: this.dir}, tests, options));
     }
 
     async runProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions, interactive = false) {
-        return this.runSomething(async () => runProblemSolutionTester({dir: this.dir, ...forAllTests}, tests, options), interactive);
+        return this.runSomething(async () => runProblemSolutionTester({...forAllTests, dir: this.dir}, tests, options), interactive);
     }
 
     async runFromJSONWithoutFiles(problem = defaultProblem, solution = defaultSolution,
                       sysConfig = defaultSysConfig) {
-        return this.runSomething(async () => {
-            let data = await runFromJSONWithoutFiles(problem, solution, sysConfig);
-            data[0] = {dir: this.dir, ...data[0]};
-            return data;
-        });
+        return this.runSomething(() => runFromJSONWithoutFiles(problem, solution, {...sysConfig, dir: this.dir}));
     }    
 
     async runFromJSON(problem = defaultProblem, solution = defaultSolution,
                       sysConfig = defaultSysConfig) {
-        return this.runSomething(async () => {
-            let data = await runFromJSON(problem, solution, sysConfig);
-            data[0] = {dir: this.dir, ...data[0]};
-            return data;
-        });
+        return this.runSomething(async () => runFromJSON(problem, solution, {...sysConfig, dir: this.dir}));
     }
 
     nextTest() {

@@ -116,7 +116,7 @@ export default function customChecker (checkerConfig, cwd) {
                         subProcess.stdin.write(JSON.stringify(checkerConfig.tests[testNumber]) + '\n');
                         break;
                     case "test.correctAnswers":
-                        subProcess.stdin.write(checkerConfig.tests[testNumber].correctAnswers.join(data.substring(key.length + 1)) + '\n');
+                        subProcess.stdin.write(checkerConfig.tests[testNumber].correctAnswers.map(elem => elem.replaceAll('\n', "\\n")).join(data.substring(key.length + 1)) + '\n');
                         break;
                     case "test.info":
                         subProcess.stdin.write(checkerConfig.tests[testNumber].info + '\n');

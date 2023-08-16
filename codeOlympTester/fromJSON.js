@@ -98,7 +98,10 @@ export function fromJSONWithoutFiles(problem = defaultProblem, solution = defaul
     }
     else {
         for (let i = 0; i < problem.testsCount; i++) {
-            arr.push({});
+            arr.push({
+                maxTime: problem.timeLimit,
+                maxRam: problem.ramLimit
+            });
         }
     }
     return [{

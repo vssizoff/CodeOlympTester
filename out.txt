@@ -1,0 +1,19 @@
+4\n0 1 0 0 \n0 0 1 0 \n0 0 0 1 \n0 0 0 0 \n
+config.files.in.txt: 21\nconfig.files.in.txt\nconfig\nconfig.default\nconfig.useCorrectAnswers\nconfig.cmd\n/config.files\nconfig.filesKeys  \nconfig.info\nconfig.tests\nconfig.tests.length\nconfig.tests.correctAnswers ::::\nconfig.tests.info ::::\n/outputFiles\noutputFilesKeys  \n/inputFiles\ninputFilesKeys  \ninputText\ntest\ntest.correctAnswers ::::\ntest.info\ntestNumber
+config: {"info":null,"tests":[{"correctAnswers":["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n1 0 0 0"],"info":null,"vars":{}},{"correctAnswers":["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0"],"info":null,"vars":{}}],"default":false,"useCorrectAnswers":true,"cmd":"checker.exe","files":"to see files request config.files"}
+config.default: 0
+config.useCorrectAnswers: 1
+config.cmd: checker.exe
+config.filesKeys  : checker.exe in.txt
+config.info: null
+config.tests: [{"correctAnswers":["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n1 0 0 0"],"info":null,"vars":{}},{"correctAnswers":["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0"],"info":null,"vars":{}}]
+config.tests.length: undefined
+config.tests.correctAnswers ::::: undefined
+config.tests.info ::::: undefined
+outputFilesKeys  : test.exe
+inputFilesKeys  : test.exe
+inputText: 4 3\n0 1\n1 2\n2 3\n
+test: {"correctAnswers":["4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0"],"info":null,"vars":{}}
+test.correctAnswers ::::: 4\n0 1 0 0\n0 0 1 0\n0 0 0 1\n0 0 0 0
+test.info: null
+testNumber: 1
