@@ -18,7 +18,8 @@ export class InteractiveProblemSolutionTester extends ProblemSolutionTester {
 
     runTest(onEnd, i = 0) {
         let interactorConfig = {...defaultInteractorConfig, ...this.forAllTests.interactorConfig, ...this.tests[i].interactorConfig};
-        new InteractiveProblemSolutionSingleTestTester(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultInteractiveOptions.cmd, interactorConfig,
+        new InteractiveProblemSolutionSingleTestTester(this.tests[i].cmd ?? this.forAllTests.cmd ?? defaultInteractiveOptions.cmd,
+            i, interactorConfig,
             {
                 ...defaultInteractiveOptions, ...this.forAllTests, ...this.tests[i],
                 inputFiles: {...this.forAllTests.inputFiles, ...this.tests[i].inputFiles}

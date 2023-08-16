@@ -11,14 +11,14 @@ export async function runNormalProblemSolutionSingleTest(cmd, checker = NormalPr
     });
 }
 
-export async function runInteractiveProblemSolutionSingleTest(cmd, interactorConfig = defaultInteractorConfig, options = defaultTestOptions) {
+export async function runInteractiveProblemSolutionSingleTest(cmd, testNumber = 0, interactorConfig = defaultInteractorConfig, options = defaultTestOptions) {
     return new Promise(resolve => {
-        new InteractiveProblemSolutionSingleTestTester(cmd, interactorConfig, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
+        new InteractiveProblemSolutionSingleTestTester(cmd, testNumber, interactorConfig, options).onEnd((checkerResponse, testResponse) => resolve({checkerResponse, testResponse})).start();
     });
 }
 
 export async function runProblemSolutionSingleTest(cmd, checkerOrInteractorConfig = NormalProblemSolutionSingleTestTester.prototype.checker, options = defaultTestOptions, interactive = false) {
-    return interactive ? runInteractiveProblemSolutionSingleTest(cmd, checkerOrInteractorConfig, options) : runNormalProblemSolutionSingleTest(cmd, checkerOrInteractorConfig, options);
+    return interactive ? runInteractiveProblemSolutionSingleTest(cmd, 0, checkerOrInteractorConfig, options) : runNormalProblemSolutionSingleTest(cmd, checkerOrInteractorConfig, options);
 }
 
 export async function runNormalProblemSolutionTester(forAllTests = defaultOptions, tests = [], options = defaultTestsOptions) {

@@ -14,6 +14,7 @@ export let defaultProblem = {
         {text: "", files: {}},
         {text: "", files: {}}
     ],
+    testsCount: -1,
     checker: {
         info: "",
         tests: [
@@ -85,13 +86,20 @@ export function fromJSONWithoutFiles(problem = defaultProblem, solution = defaul
     //     delete problem.checker;
     // }
     let arr = [];
-    for (let i = 0; i < problem.tests.length; i++) {
-        arr.push({
-            maxTime: problem.tests[i].timeLimit ?? problem.timeLimit,
-            maxRam: problem.tests[i].ramLimit ?? problem.ramLimit,
-            inputText: !problem.interactive ? problem.tests[i].text : undefined,
-            inputFiles: problem.tests[i].files
-        });
+    if (problem.testsCount < 0) {
+        for (let i = 0; i < problem.tests.length; i++) {
+            arr.push({
+                maxTime: problem.tests[i].timeLimit ?? problem.timeLimit,
+                maxRam: problem.tests[i].ramLimit ?? problem.ramLimit,
+                inputText: !problem.interactive ? problem.tests[i].text : undefined,
+                inputFiles: problem.tests[i].files
+            });
+        }
+    }
+    else {
+        for (let i = 0; i < problem.testsCount; i++) {
+            arr.push({});
+        }
     }
     return [{
         cmd: solution.cmd,
@@ -108,10 +116,12 @@ export function fromJSONWithoutFiles(problem = defaultProblem, solution = defaul
 
 export async function fromJSON(problem = defaultProblem, solution = defaultSolution,
                                sysConfig = defaultSysConfig) {
-    for (let i = 0; i < problem.tests.length; i++) {
-        for (let filesKey in problem.tests[i].files) {
-            if (typeof problem.tests[i].files[filesKey] !== "string") continue;
-            problem.tests[i].files[filesKey] = await getFile(problem.tests[i].files[filesKey]);
+    if ("tests" in problem) {
+        for (let i = 0; i < problem.tests.length; i++) {
+            for (let filesKey in problem.tests[i].files) {
+                if (typeof problem.tests[i].files[filesKey] !== "string") continue;
+                problem.tests[i].files[filesKey] = await getFile(problem.tests[i].files[filesKey]);
+            }
         }
     }
     if ("checker" in problem && !problem.checker.default) {

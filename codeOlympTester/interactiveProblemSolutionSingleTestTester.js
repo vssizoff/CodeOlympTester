@@ -19,12 +19,13 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
     interactorFiles = {};
     interactorInfo;
     interactorTests = [];
-    verdictCommand = undefined;
+    commandPrefix = undefined;
     interactorRamIntervalId;
     interactorTimeTimeoutId;
+    testNumber = 0;
 
 
-    constructor(cmd, interactorConfig = defaultInteractorConfig, options = defaultTestOptions) {
+    constructor(cmd, testNumber = 0, interactorConfig = defaultInteractorConfig, options = defaultTestOptions) {
         super();
         options = {...defaultTestOptions, ...options};
         this.maxTime = options.maxTime;
@@ -39,6 +40,7 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         this.interactorFiles = interactorConfig.files;
         this.interactorInfo = interactorConfig.info;
         this.interactorTests = interactorConfig.tests;
+        this.testNumber = testNumber;
     }
 
     start() {
@@ -82,15 +84,47 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         this.interactorProcess.stdout.on("data", data => {
             data = data.toString();
             // if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
-            if (this.verdictCommand === undefined) {
+            if (this.commandPrefix === undefined) {
                 if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
-                this.verdictCommand = data;
+                this.commandPrefix = data;
             }
-            else if (data.startsWith(this.verdictCommand)) {
-                if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
-                verdict = Number(data.substring(this.verdictCommand.length).trim());
+            else if (!data.startsWith(this.commandPrefix)) {
+                this.process.stdin.write(data);
+                return;
             }
-            else this.process.stdin.write(data);
+            if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
+            data = data.substring(this.commandPrefix.length);
+            if (data.startsWith("config.cmd")) {
+                this.interactorProcess.stdin.write(`${this.interactorCmd}\n`);
+            }
+            else if (data.startsWith("config.files.")) {
+                this.interactorProcess.stdin.write(this.interactorFiles[data.substring("config.files.".length)] + '\n');
+            }
+            else if (data.startsWith("config.files")) {
+                this.interactorProcess.stdin.write(JSON.stringify(this.interactorFiles) + '\n');
+            }
+            else if (data.startsWith("config.filesKeys")) {
+                this.interactorProcess.stdin.write(Object.keys(this.interactorFiles).join(data.substring("config.filesKeys".length)) + '\n');
+            }
+            else if (data.startsWith("config.info")) {
+                this.interactorProcess.stdin.write(`${this.interactorInfo}\n`);
+            }
+            else if (data.startsWith("config.tests.")) {
+                this.interactorProcess.stdin.write(this.interactorTests[data.substring("config.tests.".length)] + '\n');
+            }
+            else if (data.startsWith("config.tests")) {
+                this.interactorProcess.stdin.write(JSON.stringify(this.interactorTests) + '\n');
+            }
+            else if (data.startsWith("config.tests.length")) {
+                this.interactorProcess.stdin.write(`${this.interactorTests.length}\n`);
+            }
+            else if (data.startsWith("testNumber")) {
+                this.interactorProcess.stdin.write(`${this.testNumber}\n`);
+            }
+            else if (data.startsWith("-1") || data.startsWith("0") || data.startsWith("1") || data.startsWith("2")) {
+                verdict = data[0] === '-' ? -1 : Number(data[0]);
+            }
+            // verdict = Number(data.substring(this.commandPrefix.length).trim());
         });
         this.process.stdout.on("data", data => this.interactorProcess.stdin.write(data));
     }
@@ -137,7 +171,8 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
             ...super.mainData,
             interactorCmd: this.interactorCmd,
             interactorInfo: this.interactorInfo,
-            verdictCommand: this.verdictCommand
+            commandPrefix: this.commandPrefix,
+            testNumber: this.testNumber
         }
     }
 }

@@ -49,11 +49,11 @@ export default function customChecker (checkerConfig, cwd) {
                     subProcess.stdin.write(JSON.stringify(checkerConfig.tests[Number(key.substring("config.tests.".length))]) + '\n');
                     return;
                 }
-                if (key.startsWith("config.inputFiles.")) {
+                if (key.startsWith("inputFiles.")) {
                     subProcess.stdin.write(inputFiles[key.substring("config.inputFiles.".length)].toString().replaceAll("\r\n", "\\n").replaceAll('\r', '\\n').replaceAll('\n', '\\n') + '\n');
                     return;
                 }
-                if (key.startsWith("config.outputFiles.")) {
+                if (key.startsWith("outputFiles.")) {
                     subProcess.stdin.write(outputFiles[key.substring("config.outputFiles.".length)].toString().replaceAll("\r\n", "\\n").replaceAll('\r', '\\n').replaceAll('\n', '\\n') + '\n');
                     return;
                 }
@@ -109,6 +109,9 @@ export default function customChecker (checkerConfig, cwd) {
                     case "inputText":
                         subProcess.stdin.write(inputText.replaceAll("\n", "\\n") + '\n');
                         break;
+                    case "testNumber":
+                        subProcess.stdin.write(`${testNumber}\n`);
+                        break;
                     case "test":
                         subProcess.stdin.write(JSON.stringify(checkerConfig.tests[testNumber]) + '\n');
                         break;
@@ -117,9 +120,6 @@ export default function customChecker (checkerConfig, cwd) {
                         break;
                     case "test.info":
                         subProcess.stdin.write(checkerConfig.tests[testNumber].info + '\n');
-                        break;
-                    case "testNumber":
-                        subProcess.stdin.write(`${testNumber}\n`);
                         break;
                     default:
                         subProcess.stdin.write("undefined\n");

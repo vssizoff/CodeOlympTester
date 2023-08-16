@@ -13,7 +13,7 @@
   "dependencies": {
     "auto-buffer-encoding": "^0.0.0",
     "pidusage": "^3.0.2",
-    "s-get-file": "^0.0.1",
+    "s-get-file": "^0.0.2",
     "safe-stringify-simple": "^0.0.1"
   }
 }

@@ -4,7 +4,7 @@
   "format": "tex || md || html || pdf",
   "timeLimit": 100,
   "ramLimit": 100,
-  "tests": [{}, {}],
+  "testsCount": 2,
   "interactive": true,
   "interactor": {
     "cmd": "node checker.js",
