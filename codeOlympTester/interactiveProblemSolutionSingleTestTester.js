@@ -47,14 +47,15 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         this.prepareFiles();
         this.interactorProcess = spawn(this.interactorCmd, {
             cwd: this.dir,
-            shell: true
+            shell: true,
+            // stdio: "pipe"
         });
         this.process = spawn(this.cmd, {
             cwd: this.dir,
             shell: true
         });
-        this.prepareLimits(this.process);
-        this.prepareInteractorLimits();
+        // this.prepareLimits(this.process);
+        // this.prepareInteractorLimits();
         let verdict = -1, ended = [undefined, undefined], end = (code, interactor) => {
             ended[interactor ? 1 : 0] = code;
             if (ended[0] === undefined || ended[1] === undefined) return;
@@ -83,10 +84,12 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         };
         this.interactorProcess.on("exit", code => end(code, true));
         this.process.on("exit", code => end(code, false));
-        this.interactorProcess.stdout.on("data", data => data.toString().split('\n').forEach((elem, index, array) => {
-            if (elem.trim() === "" && index === array.length - 1) return;
-            this.interactorInputHandler(elem, value => verdict = value);
-        }));
+        this.interactorProcess.stdout.on("data", data => data.toString().replaceAll("\r\n", '\n')
+            .replaceAll('\r', '\n').split('\n').forEach((elem, index, array) => {
+                if (elem.trim() === "" && index === array.length - 1) return;
+                this.interactorInputHandler(elem + (index !== array.length -1 ? '\n' : ""), value => verdict = value);
+            })
+        );
         this.process.stdout.on("data", data => this.interactorProcess.stdin.write(data));
     }
 
@@ -112,6 +115,7 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         if (this.commandPrefix === undefined) {
             if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
             this.commandPrefix = data;
+            return;
         }
         else if (!data.startsWith(this.commandPrefix)) {
             this.process.stdin.write(data);
@@ -122,26 +126,26 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         if (data.startsWith("config.cmd")) {
             this.interactorProcess.stdin.write(`${this.interactorCmd}\n`);
         }
+        else if (data.startsWith("config.filesKeys")) {
+            this.interactorProcess.stdin.write(Object.keys(this.interactorFiles).join(data.substring("config.filesKeys ".length)) + '\n');
+        }
         else if (data.startsWith("config.files.")) {
             this.interactorProcess.stdin.write(this.interactorFiles[data.substring("config.files.".length)] + '\n');
         }
         else if (data.startsWith("config.files")) {
             this.interactorProcess.stdin.write(JSON.stringify(this.interactorFiles) + '\n');
         }
-        else if (data.startsWith("config.filesKeys")) {
-            this.interactorProcess.stdin.write(Object.keys(this.interactorFiles).join(data.substring("config.filesKeys".length)) + '\n');
-        }
         else if (data.startsWith("config.info")) {
             this.interactorProcess.stdin.write(`${this.interactorInfo}\n`);
+        }
+        else if (data.startsWith("config.tests.length")) {
+            this.interactorProcess.stdin.write(`${this.interactorTests.length}\n`);
         }
         else if (data.startsWith("config.tests.")) {
             this.interactorProcess.stdin.write(this.interactorTests[data.substring("config.tests.".length)] + '\n');
         }
         else if (data.startsWith("config.tests")) {
             this.interactorProcess.stdin.write(JSON.stringify(this.interactorTests) + '\n');
-        }
-        else if (data.startsWith("config.tests.length")) {
-            this.interactorProcess.stdin.write(`${this.interactorTests.length}\n`);
         }
         else if (data.startsWith("testNumber")) {
             this.interactorProcess.stdin.write(`${this.testNumber}\n`);

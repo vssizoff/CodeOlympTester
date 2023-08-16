@@ -1,0 +1,7 @@
+6
+! config.filesKeys ;
+! config.info
+! config.tests.0
+! config.tests
+! config.tests.length
+! testNumber

@@ -7,9 +7,10 @@
     "testsCount": 2,
     "interactive": true,
     "interactor": {
-        "cmd": "node interactor.js",
+        "cmd": "interactor.exe",
         "files": {
-            "interactor.js": "interactor.js"
+            "interactor.exe": "./interactor.exe",
+            "in.txt": "./in0.txt"
         },
         "info": null,
         "tests": [
