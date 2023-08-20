@@ -2,14 +2,11 @@
 
 # Table of Contents
 > 1. [Installation](#installation)
-> 2. [Starting](#starting)
-> 3. [Registering handlers](#registering-handlers)
-> 4. [Sending files](#sending-files)
-> 5. [Keyboard](#keyboard)
-> 6. [Stop / pause / resume / restart server](#stop--pause--resume--restart-server)
-> 7. [Events](#events)
-> 8. [Files (utf-8)](#files-utf-8)
-> 9. [Other](#other)
+> 2. [Task structure](#slot-managers)
+> 3. [Solution structure](#solution-structure)
+> 4. [Solution running](#solution-running)
+> 5. [Slots](#slots)
+> 6. [Slot managers](#slot-managers)
 
 # Installation
 * Init node project

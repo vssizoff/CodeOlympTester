@@ -2,14 +2,11 @@
 
 # Table of Contents
 > 1. [Installation](#installation)
-> 2. [Starting](#starting)
-> 3. [Registering handlers](#registering-handlers)
-> 4. [Sending files](#sending-files)
-> 5. [Keyboard](#keyboard)
-> 6. [Stop / pause / resume / restart server](#stop--pause--resume--restart-server)
-> 7. [Events](#events)
-> 8. [Files (utf-8)](#files-utf-8)
-> 9. [Other](#other)
+> 2. [Task structure](#slot-managers)
+> 3. [Solution structure](#solution-structure)
+> 4. [Solution running](#solution-running)
+> 5. [Slots](#slots)
+> 6. [Slot managers](#slot-managers)
 
 # Installation
 * Init node project
@@ -127,25 +124,25 @@ npm i code-olymp-tester
 ## Interactive problem
 ```json
 {
-    "title": "test",
-    "content": "Test problem",
-    "format": "tex || md || html || pdf",
-    "timeLimit": 200,
-    "ramLimit": 100,
-    "testsCount": 2,
-    "interactive": true,
-    "interactor": {
-        "cmd": "interactor.exe",
-        "files": {
-            "interactor.exe": "./interactor.exe",
-            "in.txt": "./in0.txt"
-        },
-        "info": null,
-        "tests": [
-            null,
-            null
-        ]
-    }
+  "title": "test",
+  "content": "Test problem",
+  "format": "tex || md || html || pdf",
+  "timeLimit": 200,
+  "ramLimit": 100,
+  "testsCount": 2,
+  "interactive": true,
+  "interactor": {
+    "cmd": "interactor.exe",
+    "files": {
+      "interactor.exe": "./interactor.exe",
+      "in.txt": "./in0.txt"
+    },
+    "info": null,
+    "tests": [
+      null,
+      null
+    ]
+  }
 }
 ```
 ## Solution output structure
@@ -180,7 +177,7 @@ import {runFromJSON} from "code-olymp-tester";
 import * as fs from "fs";
 
 runFromJSON(
-    fs.readFileSync("./someProblem.json", {encoding: "utf8"}), 
+    fs.readFileSync("./someProblem.json", {encoding: "utf8"}),
     fs.readFileSync("./someSolution.json", {encoding: "utf8"})
 ).then(response => {
     console.log(response.responsesMainData, response.responses.map(elem => elem.status), response.status);
