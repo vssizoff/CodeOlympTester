@@ -1,12 +1,23 @@
 {
-  "name": "code_olymp_tester",
+  "name": "code-olymp-tester",
   "version": "0.0.0s0",
   "description": "",
   "main": "index.js",
   "author": "sizoff",
-  "license": "ISC",
   "type": "module",
   "dependencies": {
-    "pidusage": "^3.0.2"
-  }
+    "auto-buffer-encoding": "^0.0.0",
+    "pidusage": "^3.0.2",
+    "s-get-file": "^0.0.2",
+    "safe-stringify-simple": "^0.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vssizoff/CodeOlympTester"
+  },
+  "bugs": {
+    "url": "https://github.com/vssizoff/CodeOlympTester/issues"
+  },
+  "homepage": "https://github.com/vssizoff/CodeOlympTester#readme",
+  "readme": "README.md"
 }
