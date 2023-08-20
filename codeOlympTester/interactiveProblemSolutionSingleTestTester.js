@@ -48,11 +48,12 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         this.interactorProcess = spawn(this.interactorCmd, {
             cwd: this.dir,
             shell: true,
-            // stdio: "pipe"
+            // stdio: "inherit"
         });
         this.process = spawn(this.cmd, {
             cwd: this.dir,
-            shell: true
+            shell: true,
+            // stdio: "inherit"
         });
         // this.prepareLimits(this.process);
         // this.prepareInteractorLimits();
@@ -84,13 +85,14 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         };
         this.interactorProcess.on("exit", code => end(code, true));
         this.process.on("exit", code => end(code, false));
-        this.interactorProcess.stdout.on("data", data => data.toString().replaceAll("\r\n", '\n')
-            .replaceAll('\r', '\n').split('\n').forEach((elem, index, array) => {
+        this.interactorProcess.stdout.on("data", data => {
+            data.toString().replaceAll("\r\n", '\n')
+                .replaceAll('\r', '\n').split('\n').forEach((elem, index, array) => {
                 if (elem.trim() === "" && index === array.length - 1) return;
-                this.interactorInputHandler(elem + (index !== array.length -1 ? '\n' : ""), value => verdict = value);
+                this.interactorOutputHandler(elem + (index !== array.length - 1 || array[array.length - 1].trim() === "" ? '\n' : ""), value => verdict = value);
             })
-        );
-        this.process.stdout.on("data", data => this.interactorProcess.stdin.write(data));
+        });
+        this.process.stdout.on("data", data => this.interactorProcess.stdin.write(/*data.toString()[data.toString().length - 1] === '\n' ? data : data.toString() + '\n'*/data));
     }
 
     prepareInteractorLimits() {
@@ -111,7 +113,7 @@ export class InteractiveProblemSolutionSingleTestTester extends ProblemSolutionS
         }, 100);
     }
 
-    interactorInputHandler(data, setVerdict) {
+    interactorOutputHandler(data, setVerdict) {
         if (this.commandPrefix === undefined) {
             if (data[data.length - 1] === '\n') data = data.substring(0, data.length - 1);
             this.commandPrefix = data;
